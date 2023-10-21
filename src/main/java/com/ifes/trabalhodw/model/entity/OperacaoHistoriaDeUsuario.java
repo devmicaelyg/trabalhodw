@@ -12,7 +12,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OperacaoHistoriaUsuario {
+public class OperacaoHistoriaDeUsuario {
 
     @Id
     @GeneratedValue(generator = "uuid2")
