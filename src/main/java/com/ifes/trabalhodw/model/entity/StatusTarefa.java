@@ -1,7 +1,6 @@
 package com.ifes.trabalhodw.model.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 
 @AllArgsConstructor()
 public enum StatusTarefa {

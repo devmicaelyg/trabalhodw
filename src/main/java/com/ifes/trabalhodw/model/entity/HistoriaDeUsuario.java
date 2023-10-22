@@ -1,6 +1,7 @@
 package com.ifes.trabalhodw.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -18,10 +19,23 @@ public class HistoriaDeUsuario {
     private String titulo;
     private String descricao;
     private TipoPrioridade prioridade;
+
+    @NotNull
     private Date dataCriacao;
+    @NotNull
     private Date dataAtualizacao;
 
     @ManyToOne
     @JoinColumn(name = "operacao_id")
     private OperacaoHistoriaDeUsuario operacaoHistoriaDeUsuario;
+
+    @ManyToOne
+    @JoinColumn(name = "epico_id")
+    private Epico epico;
+
+    // contructor that initializes the dates
+    public HistoriaDeUsuario() {
+        this.dataCriacao = new Date();
+        this.dataAtualizacao = new Date();
+    }
 }

@@ -9,11 +9,10 @@ import java.util.UUID;
 
 @Data
 @AllArgsConstructor
-public class HistoriaDeUsuarioDto {
+public class EpicoInputDto {
     private String titulo;
     private String descricao;
     private TipoPrioridade prioridade;
-
     @JsonIgnore
-    private UUID epicoId;
+    private UUID historiaDeUsuarioId;
 }
