@@ -1,5 +1,7 @@
 package com.ifes.trabalhodw.model.entity;
 
+import com.ifes.trabalhodw.model.entity.tipos.TipoHistoriaUsuario;
+import com.ifes.trabalhodw.model.entity.tipos.TipoPrioridade;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -26,14 +28,13 @@ public class HistoriaDeUsuario {
     private Date dataAtualizacao;
 
     @ManyToOne
-    @JoinColumn(name = "operacao_id")
-    private OperacaoHistoriaDeUsuario operacaoHistoriaDeUsuario;
+    @JoinColumn(name = "fk_tipo_historia")
+    private TipoHistoriaUsuario operacaoHistoriaDeUsuario;
 
     @ManyToOne
     @JoinColumn(name = "epico_id")
     private Epico epico;
 
-    // contructor that initializes the dates
     public HistoriaDeUsuario() {
         this.dataCriacao = new Date();
         this.dataAtualizacao = new Date();

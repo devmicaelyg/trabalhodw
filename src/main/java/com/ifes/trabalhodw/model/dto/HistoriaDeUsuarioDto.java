@@ -1,7 +1,7 @@
 package com.ifes.trabalhodw.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ifes.trabalhodw.model.entity.TipoPrioridade;
+import com.ifes.trabalhodw.model.entity.tipos.TipoPrioridade;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

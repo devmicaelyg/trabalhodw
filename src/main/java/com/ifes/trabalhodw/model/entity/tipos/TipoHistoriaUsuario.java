@@ -1,18 +1,20 @@
-package com.ifes.trabalhodw.model.entity;
+package com.ifes.trabalhodw.model.entity.tipos;
 
+import com.ifes.trabalhodw.model.entity.HistoriaDeUsuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OperacaoHistoriaDeUsuario {
+public class TipoHistoriaUsuario {
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -20,7 +22,10 @@ public class OperacaoHistoriaDeUsuario {
     private UUID id;
     private String nome;
 
-     @ManyToOne
-     @JoinColumn(name = "historiasUsuario_id")
+    @ManyToOne
+    @JoinColumn(name = "historiasUsuario_id")
     private HistoriaDeUsuario historiasUsuario;
+
+    @OneToMany(mappedBy = "")
+    private List<TipoTarefa> tiposTarefas;
 }

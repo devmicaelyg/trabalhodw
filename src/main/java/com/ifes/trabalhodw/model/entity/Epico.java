@@ -1,5 +1,7 @@
 package com.ifes.trabalhodw.model.entity;
 
+import com.ifes.trabalhodw.model.entity.tipos.TipoEpico;
+import com.ifes.trabalhodw.model.entity.tipos.TipoPrioridade;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
