@@ -1,9 +1,6 @@
 package com.ifes.trabalhodw.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -25,7 +22,12 @@ public class Epico{
     private Date dataCriacao;
     private Date dataAtualizacao;
 
+    @ManyToOne
+    @JoinColumn(name = "fk_tipo_epico")
+    private TipoEpico tipoEpico;
 
     @OneToMany
     private List<HistoriaDeUsuario> historiaDeUsuario;
+    @OneToMany
+    private List<Epico> epicos;
 }
