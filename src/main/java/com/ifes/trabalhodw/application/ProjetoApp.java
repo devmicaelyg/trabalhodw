@@ -1,14 +1,13 @@
 package com.ifes.trabalhodw.application;
 
 import com.ifes.trabalhodw.application.generic.IGenericApplication;
+import com.ifes.trabalhodw.exception.NotFoundErrorException;
 import com.ifes.trabalhodw.model.dto.ProjetoDto;
 import com.ifes.trabalhodw.model.entity.Projeto;
 import com.ifes.trabalhodw.repository.IProjetoRepository;
-import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
@@ -46,9 +45,9 @@ public class ProjetoApp implements IGenericApplication<ProjetoDto> {
         var model = repository.findById(id);
 
         if(model.isEmpty())
-            throw new RuntimeException("Não foi encontrado um projeto com esse ID");
+            throw new NotFoundErrorException("Não foi encontrado um projeto com esse ID");
 
-        return modelMapper.map(model, ProjetoDto.class);
+        return modelMapper.map(model.get(), ProjetoDto.class);
     }
 
     @Override

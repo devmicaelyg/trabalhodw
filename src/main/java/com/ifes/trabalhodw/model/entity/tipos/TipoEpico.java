@@ -21,9 +21,5 @@ public class TipoEpico {
     private UUID id;
     private String descricao;
 
-    public TipoEpicoDto MapperToDto(){
-        var entity = new TipoEpicoDto();
-        entity.setDescricao(this.getDescricao());
-        return entity;
-    }
+
 }

@@ -9,12 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TipoEpicoDto {
-    private String nome;
     private String descricao;
 
-    public TipoEpico MapperToEntity(){
-        var entity = new TipoEpico();
-        entity.setDescricao(this.getDescricao());
-        return entity;
+    public void ValidarTipoEpico(){
+        if(this.getDescricao().isEmpty())
+            throw new RuntimeException("A descrição do Tipo do Epico é obrigatório.");
     }
 }

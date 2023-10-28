@@ -17,7 +17,6 @@ import static aj.org.objectweb.asm.Type.getType;
 @RestController
 @RequestMapping("/projeto")
 public class ProjetoController {
-
     @Autowired
     private ProjetoApp application;
 
