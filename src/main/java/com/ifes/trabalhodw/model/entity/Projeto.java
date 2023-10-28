@@ -25,5 +25,7 @@ public class Projeto {
     private String nome;
     private String descricao;
 
+    @OneToMany
+    private List<Epico> epicos;
 
 }
