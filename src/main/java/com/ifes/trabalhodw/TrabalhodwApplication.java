@@ -6,9 +6,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @OpenAPIDefinition(info = @Info(
-		title = "Vou mudar porque o professor lembrou qo school",
+		title = "Projeto Origami",
 		version = "1.0",
-		description = "A Webservice about school"))
+		description = "Componentes:\n- Kailany Faustino\n- Micaely Gusmão\n- Richard Lucas"))
 @SpringBootApplication
 public class TrabalhodwApplication {
 

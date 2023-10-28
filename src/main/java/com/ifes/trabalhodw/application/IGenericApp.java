@@ -1,7 +1,5 @@
 package com.ifes.trabalhodw.application;
 
-import com.ifes.trabalhodw.model.entity.HistoriaDeUsuario;
-
 import java.util.List;
 import java.util.Optional;
 
