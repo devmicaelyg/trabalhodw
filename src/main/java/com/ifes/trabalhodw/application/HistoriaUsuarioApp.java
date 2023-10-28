@@ -1,6 +1,6 @@
 package com.ifes.trabalhodw.application;
 
-import com.ifes.trabalhodw.exception.NotfoundError;
+import com.ifes.trabalhodw.exception.NotFoundErrorException;
 import com.ifes.trabalhodw.model.dto.EpicoInputDto;
 import com.ifes.trabalhodw.model.dto.HistoriaDeUsuarioDto;
 import com.ifes.trabalhodw.model.entity.Epico;
@@ -52,7 +52,7 @@ public class HistoriaUsuarioApp implements IGenericApp<HistoriaDeUsuario, Histor
 
     @Override
     public HistoriaDeUsuario update(UUID id, HistoriaDeUsuarioDto entity) {
-        HistoriaDeUsuario hist = this.repository.findById(id).orElseThrow(() -> new NotfoundError("Historia de Usuario não encontrada"));
+        HistoriaDeUsuario hist = this.repository.findById(id).orElseThrow(() -> new NotFoundErrorException("Historia de Usuario não encontrada"));
         if (entity.getTitulo() != null) {
             hist.setTitulo(entity.getTitulo());
         }

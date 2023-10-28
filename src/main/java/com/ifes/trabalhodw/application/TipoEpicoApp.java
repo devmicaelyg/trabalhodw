@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -60,14 +61,14 @@ public class TipoEpicoApp implements IGenericApplication<TipoEpicoDto> {
     @Override
     public TipoEpicoDto update(UUID id, TipoEpicoDto entity) {
         var tipoEpico = repository.findById(id);
+        if(tipoEpico.isEmpty())
+            throw new RuntimeException("Não foi encontrado um tipo de epico com esse ID");
 
-        if(tipoEpico.isPresent()){
-            tipoEpico.get().setDescricao(entity.getDescricao());
-            System.out.println(tipoEpico.get());
-            var tt = repository.save(tipoEpico.get());
-            return modelMapper.map(tt, TipoEpicoDto.class);
-        }
+        TipoEpico epicoAntigo = tipoEpico.get();
+        TipoEpico epicoAtualizado = modelMapper.map(entity, TipoEpico.class);
+        epicoAtualizado.setId(epicoAntigo.getId());
 
-        return null;
+        epicoAtualizado =  repository.save(epicoAtualizado);
+        return modelMapper.map(epicoAtualizado, TipoEpicoDto.class);
     }
 }
