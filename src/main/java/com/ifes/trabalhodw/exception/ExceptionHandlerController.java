@@ -14,4 +14,10 @@ public class ExceptionHandlerController {
     public String handleNotFound(NotFoundErrorException ex) {
         return ex.getMessage();
     }
+    @ExceptionHandler(RequiredFieldException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public String handleRequiredField(RequiredFieldException ex) {
+        return ex.getMessage();
+    }
 }

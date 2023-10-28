@@ -8,5 +8,5 @@ public interface IGenericApplication<T> {
     T create(T entity);
     T getById(UUID id);
     void deleteById(UUID id);
-    T update(UUID id, T entity);
+    T update(T entity);
 }
