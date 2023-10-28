@@ -1,4 +1,4 @@
-package com.ifes.trabalhodw.model.dto;
+package com.ifes.trabalhodw.model.dto.InputDto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ifes.trabalhodw.model.entity.tipos.TipoPrioridade;

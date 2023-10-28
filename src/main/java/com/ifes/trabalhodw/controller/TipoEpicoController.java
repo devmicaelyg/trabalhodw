@@ -1,7 +1,8 @@
 package com.ifes.trabalhodw.controller;
 
 import com.ifes.trabalhodw.application.TipoEpicoApp;
-import com.ifes.trabalhodw.model.dto.TipoEpicoDto;
+import com.ifes.trabalhodw.model.dto.InputDto.TipoEpicoInputDto;
+import com.ifes.trabalhodw.model.dto.OutputDto.TipoEpicoOutputDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,19 +16,19 @@ public class TipoEpicoController {
     private TipoEpicoApp application;
 
     @GetMapping("/all")
-    public List<TipoEpicoDto> getAll(){
+    public List<TipoEpicoOutputDto> getAll(){
         return application.getAll();
     }
 
     @GetMapping
-    public TipoEpicoDto getById(@RequestParam("Id") UUID id) { return application.getById(id);}
+    public TipoEpicoOutputDto getById(@RequestParam("Id") UUID id) { return application.getById(id);}
 
     @PostMapping
-    public TipoEpicoDto create(@RequestBody TipoEpicoDto tipoEpico){ return application.create(tipoEpico); }
+    public TipoEpicoOutputDto create(@RequestBody TipoEpicoInputDto tipoEpico){ return application.create(tipoEpico); }
 
     @PutMapping
-    public TipoEpicoDto update(@RequestParam("Id") UUID id, @RequestBody TipoEpicoDto tipoEpicoDto){
-        return application.update(id, tipoEpicoDto);
+    public TipoEpicoOutputDto update(@RequestParam("Id") UUID id, @RequestBody TipoEpicoInputDto tipoEpicoOutputDto){
+        return application.update(id, tipoEpicoOutputDto);
     }
 
     @DeleteMapping

@@ -1,6 +1,6 @@
 package com.ifes.trabalhodw.application;
 
-import com.ifes.trabalhodw.model.dto.EpicoInputDto;
+import com.ifes.trabalhodw.model.dto.InputDto.EpicoInputDto;
 import com.ifes.trabalhodw.model.entity.Epico;
 import org.springframework.stereotype.Service;
 

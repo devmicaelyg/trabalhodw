@@ -1,6 +1,5 @@
-package com.ifes.trabalhodw.model.dto;
+package com.ifes.trabalhodw.model.dto.InputDto;
 
-import com.ifes.trabalhodw.model.entity.tipos.TipoEpico;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,8 +9,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TipoEpicoDto {
-    private UUID id;
+public class TipoEpicoInputDto {
     private String descricao;
 
     public void ValidarTipoEpico(){
