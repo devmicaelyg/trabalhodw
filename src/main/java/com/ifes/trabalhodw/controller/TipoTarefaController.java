@@ -1,9 +1,7 @@
 package com.ifes.trabalhodw.controller;
 
-import com.ifes.trabalhodw.application.TipoHistoriaUsuarioApp;
 import com.ifes.trabalhodw.application.TipoTarefaApp;
-import com.ifes.trabalhodw.model.dto.TipoHistoriaUsuarioDto;
-import com.ifes.trabalhodw.model.dto.TipoTarefaDto;
+import com.ifes.trabalhodw.model.dto.tipos.TipoTarefaDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

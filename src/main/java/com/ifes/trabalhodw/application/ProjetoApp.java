@@ -56,10 +56,10 @@ public class ProjetoApp implements IGenericApplication<ProjetoDto> {
     }
 
     @Override
-    public ProjetoDto update(UUID id, ProjetoDto entity) {
+    public ProjetoDto update(ProjetoDto entity) {
         //var exists = repository.findById(id);
         Projeto projeto = modelMapper.map(entity, Projeto.class);
-        projeto.setId(id);
+        projeto.setId(entity.getId());
 
         Projeto projetoAtt = repository.save(projeto);
         return modelMapper.map(projetoAtt, ProjetoDto.class);

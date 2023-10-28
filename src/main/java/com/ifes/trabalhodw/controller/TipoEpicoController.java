@@ -1,7 +1,7 @@
 package com.ifes.trabalhodw.controller;
 
 import com.ifes.trabalhodw.application.TipoEpicoApp;
-import com.ifes.trabalhodw.model.dto.TipoEpicoDto;
+import com.ifes.trabalhodw.model.dto.tipos.TipoEpicoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

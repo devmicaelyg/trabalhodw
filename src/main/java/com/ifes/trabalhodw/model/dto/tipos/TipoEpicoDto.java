@@ -1,4 +1,4 @@
-package com.ifes.trabalhodw.model.dto;
+package com.ifes.trabalhodw.model.dto.tipos;
 
 import com.ifes.trabalhodw.model.entity.tipos.TipoEpico;
 import lombok.AllArgsConstructor;

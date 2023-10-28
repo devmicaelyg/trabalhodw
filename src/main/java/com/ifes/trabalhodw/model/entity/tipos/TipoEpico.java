@@ -1,14 +1,11 @@
 package com.ifes.trabalhodw.model.entity.tipos;
 
-import com.ifes.trabalhodw.model.dto.TipoEpicoDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.util.List;
 import java.util.UUID;
 
 @Entity

@@ -36,5 +36,4 @@ public class Epico{
             joinColumns = @JoinColumn(name = "epico_id"),
             inverseJoinColumns = @JoinColumn(name = "dependencia_id"))
     private List<Epico> dependencias;
-
 }

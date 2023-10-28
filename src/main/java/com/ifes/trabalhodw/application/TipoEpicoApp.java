@@ -1,11 +1,8 @@
 package com.ifes.trabalhodw.application;
 
 import com.ifes.trabalhodw.application.generic.IGenericApplication;
-import com.ifes.trabalhodw.model.dto.ProjetoDto;
-import com.ifes.trabalhodw.model.dto.TipoEpicoDto;
-import com.ifes.trabalhodw.model.entity.Projeto;
+import com.ifes.trabalhodw.model.dto.tipos.TipoEpicoDto;
 import com.ifes.trabalhodw.model.entity.tipos.TipoEpico;
-import com.ifes.trabalhodw.repository.IProjetoRepository;
 import com.ifes.trabalhodw.repository.ITipoEpicoRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;

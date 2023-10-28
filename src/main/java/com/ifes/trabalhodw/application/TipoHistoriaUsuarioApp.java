@@ -2,7 +2,8 @@ package com.ifes.trabalhodw.application;
 
 import com.ifes.trabalhodw.application.generic.IGenericApplication;
 import com.ifes.trabalhodw.exception.NotFoundErrorException;
-import com.ifes.trabalhodw.model.dto.TipoHistoriaUsuarioDto;
+import com.ifes.trabalhodw.model.dto.tipos.TipoHistoriaUsuarioDto;
+import com.ifes.trabalhodw.model.entity.Epico;
 import com.ifes.trabalhodw.model.entity.tipos.TipoHistoriaUsuario;
 import com.ifes.trabalhodw.repository.ITipoHistoriaUsuario;
 import org.modelmapper.ModelMapper;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -68,5 +70,21 @@ public class TipoHistoriaUsuarioApp implements IGenericApplication<TipoHistoriaU
 
         TipoHistoriaUsuario tipoHistoriaUsuario = repository.save(tipo);
         return modelMapper.map(tipoHistoriaUsuario, TipoHistoriaUsuarioDto.class);
+    }
+
+    public List<TipoHistoriaUsuario> getByEpico(Epico epico){
+        List<TipoHistoriaUsuario> historiasDeUmEpic = new ArrayList<>();
+
+        if(epico.getTipoEpico().getDescricao().equals("CRUD+L")){
+            var tipos = repository.findAll();
+
+            tipos.forEach(h -> {
+                if(h.getTipoEpico().getId().equals(epico.getTipoEpico().getId())){
+                    historiasDeUmEpic.add(h);
+                }
+            });
+        }
+
+        return historiasDeUmEpic;
     }
 }

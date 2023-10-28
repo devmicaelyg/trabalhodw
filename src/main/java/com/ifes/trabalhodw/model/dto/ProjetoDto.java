@@ -5,12 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProjetoDto {
+    private UUID id;
     private String nome;
-
 
     public void ValidarProjeto(){
         if(this.getNome().isEmpty())

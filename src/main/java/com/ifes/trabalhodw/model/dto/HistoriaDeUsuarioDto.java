@@ -10,6 +10,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 public class HistoriaDeUsuarioDto {
+    private UUID id;
     private String titulo;
     private String descricao;
     private TipoPrioridade prioridade;

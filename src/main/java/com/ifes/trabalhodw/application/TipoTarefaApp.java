@@ -2,7 +2,8 @@ package com.ifes.trabalhodw.application;
 
 import com.ifes.trabalhodw.application.generic.IGenericApplication;
 import com.ifes.trabalhodw.exception.NotFoundErrorException;
-import com.ifes.trabalhodw.model.dto.TipoTarefaDto;
+import com.ifes.trabalhodw.model.dto.tipos.TipoTarefaDto;
+import com.ifes.trabalhodw.model.entity.tipos.TipoHistoriaUsuario;
 import com.ifes.trabalhodw.model.entity.tipos.TipoTarefa;
 import com.ifes.trabalhodw.repository.ITipoTarefaRepository;
 import org.modelmapper.ModelMapper;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -68,5 +70,17 @@ public class TipoTarefaApp implements IGenericApplication<TipoTarefaDto> {
 
         TipoTarefa tipoTarefa = repository.save(tipo);
         return modelMapper.map(tipoTarefa, TipoTarefaDto.class);
+    }
+
+    public List<TipoTarefa> geyByTipoHistoriaUsuario(TipoHistoriaUsuario tipoHistoriaUsuario){
+        List<TipoTarefa> listaTipoTarefa = new ArrayList<>();
+        var tipos = repository.findAll();
+
+        tipos.forEach(t -> {
+            if(t.getTipoHistoriaUsuario().getId().equals(tipoHistoriaUsuario.getId()))
+                listaTipoTarefa.add(t);
+        });
+
+        return listaTipoTarefa;
     }
 }

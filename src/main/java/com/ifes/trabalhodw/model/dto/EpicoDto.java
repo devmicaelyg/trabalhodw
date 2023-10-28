@@ -1,13 +1,11 @@
 package com.ifes.trabalhodw.model.dto;
 
 import com.ifes.trabalhodw.model.entity.Epico;
+import com.ifes.trabalhodw.model.entity.HistoriaDeUsuario;
 import com.ifes.trabalhodw.model.entity.Projeto;
 import com.ifes.trabalhodw.model.entity.tipos.TipoEpico;
 import com.ifes.trabalhodw.model.entity.tipos.TipoPrioridade;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,4 +36,8 @@ public class EpicoDto {
             joinColumns = @JoinColumn(name = "epico_id"),
             inverseJoinColumns = @JoinColumn(name = "dependencia_id"))
     private List<Epico> dependencias;
+
+    @OneToMany(mappedBy = "epico")
+    private List<HistoriaDeUsuarioDto> historiasDeUsuarios;
+
 }
