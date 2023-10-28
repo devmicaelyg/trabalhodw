@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -20,4 +21,7 @@ public class TipoTarefa {
     @ManyToOne
     @JoinColumn(name = "tipo_historia_usuario_id")
     private TipoHistoriaUsuario tipoHistoriaUsuario;
+
+    @ManyToMany
+    private List<TipoTarefa> dependecias;
 }
