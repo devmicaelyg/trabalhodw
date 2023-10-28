@@ -17,7 +17,7 @@ import java.util.UUID;
 @Service
 public class HistoriaUsuarioApp implements IGenericApp<HistoriaDeUsuario, HistoriaDeUsuarioDto, UUID> {
 
-    private final HistoriaDeUsuarioRepository repository;
+    private final JpaRepository<HistoriaDeUsuario, UUID> repository;
     private final IGenericApp<Epico, EpicoInputDto, UUID> epicoApp;
 
     @Autowired

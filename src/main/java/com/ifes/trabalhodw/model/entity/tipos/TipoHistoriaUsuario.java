@@ -1,7 +1,6 @@
 package com.ifes.trabalhodw.model.entity.tipos;
 
 import com.ifes.trabalhodw.model.entity.HistoriaDeUsuario;
-import com.ifes.trabalhodw.model.entity.Projeto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

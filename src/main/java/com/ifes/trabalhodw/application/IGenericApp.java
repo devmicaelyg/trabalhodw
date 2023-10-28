@@ -1,13 +1,18 @@
 package com.ifes.trabalhodw.application;
 
+import com.ifes.trabalhodw.model.entity.HistoriaDeUsuario;
+
 import java.util.List;
+import java.util.Optional;
 
-public interface IGenericApp<T> {
-    T create(T entity);
+public interface IGenericApp<T, InputDto, Id> {
+    T create(InputDto entity);
 
-    T getById(int id);
+    Optional<T> getById(Id id);
 
-    void delete(int id);
+    void delete(Id id);
 
     List<T> getAll();
+
+    T update(Id id, InputDto entity);
 }
