@@ -23,6 +23,7 @@ public class Projeto {
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     private UUID id;
     private String nome;
+    private String descricao;
 
 
 }
