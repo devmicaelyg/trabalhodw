@@ -6,7 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @OpenAPIDefinition(info = @Info(
-		title = "school",
+		title = "Vou mudar porque o professor lembrou qo school",
 		version = "1.0",
 		description = "A Webservice about school"))
 @SpringBootApplication
