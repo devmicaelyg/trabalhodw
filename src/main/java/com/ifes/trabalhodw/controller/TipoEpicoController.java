@@ -27,7 +27,7 @@ public class TipoEpicoController {
 
     @PutMapping
     public TipoEpicoDto update(@RequestParam("Id") UUID id, @RequestBody TipoEpicoDto tipoEpicoDto){
-        return application.create(tipoEpicoDto);
+        return application.update(tipoEpicoDto);
     }
 
     @DeleteMapping

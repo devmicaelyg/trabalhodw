@@ -32,7 +32,9 @@ public class ProjetoController {
     public ProjetoDto create(@RequestBody ProjetoDto projeto){ return application.create(projeto); }
 
     @PutMapping
-    public ProjetoDto update(@RequestParam("Id") UUID id, @RequestBody ProjetoDto projeto){ return application.create(projeto); }
+    public ProjetoDto update(@RequestParam("Id") UUID id, @RequestBody ProjetoDto projeto){
+        return application.update(projeto);
+    }
 
     @DeleteMapping
     public void delete(@RequestParam("Id") UUID id){ application.deleteById(id); }

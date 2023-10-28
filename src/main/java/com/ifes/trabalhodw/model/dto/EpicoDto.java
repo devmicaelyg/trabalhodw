@@ -1,28 +1,30 @@
-package com.ifes.trabalhodw.model.entity;
+package com.ifes.trabalhodw.model.dto;
 
+import com.ifes.trabalhodw.model.entity.Epico;
+import com.ifes.trabalhodw.model.entity.Projeto;
 import com.ifes.trabalhodw.model.entity.tipos.TipoEpico;
 import com.ifes.trabalhodw.model.entity.tipos.TipoPrioridade;
-import jakarta.persistence.*;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-@Entity
 @Data
-public class Epico{
-    @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+@AllArgsConstructor
+@NoArgsConstructor
+public class EpicoDto {
     private UUID id;
-
     private String titulo;
     private String descricao;
     private TipoPrioridade relevancia;
     private Date dataCriacao;
-    //private String categoria;
     @ManyToOne
     @JoinColumn(name = "tipo_epico_id")
     private TipoEpico tipoEpico;
@@ -36,5 +38,4 @@ public class Epico{
             joinColumns = @JoinColumn(name = "epico_id"),
             inverseJoinColumns = @JoinColumn(name = "dependencia_id"))
     private List<Epico> dependencias;
-
 }

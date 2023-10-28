@@ -58,8 +58,8 @@ public class TipoEpicoApp implements IGenericApplication<TipoEpicoDto> {
     }
 
     @Override
-    public TipoEpicoDto update(UUID id, TipoEpicoDto entity) {
-        var tipoEpico = repository.findById(id);
+    public TipoEpicoDto update(TipoEpicoDto entity) {
+        var tipoEpico = repository.findById(entity.getId());
 
         if(tipoEpico.isPresent()){
             tipoEpico.get().setDescricao(entity.getDescricao());
