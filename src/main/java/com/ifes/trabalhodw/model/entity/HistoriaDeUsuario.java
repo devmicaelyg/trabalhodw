@@ -23,7 +23,6 @@ public class HistoriaDeUsuario {
     private String titulo;
     private String descricao;
     private TipoPrioridade relevancia;
-    //private String categoria;
     private boolean isFinalizada = false;
     @NotNull
     private Date dataCriacao = new Date();
@@ -41,5 +40,8 @@ public class HistoriaDeUsuario {
             joinColumns = @JoinColumn(name = "historia_usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "dependencia_id"))
     private List<HistoriaDeUsuario> dependencias;
+
+    @OneToMany
+    private List<Tarefa> tarefas;
 
 }

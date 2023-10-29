@@ -1,77 +1,82 @@
 package com.ifes.trabalhodw.application;
 
 import com.ifes.trabalhodw.exception.NotFoundErrorException;
-import com.ifes.trabalhodw.model.dto.EpicoInputDto;
-import com.ifes.trabalhodw.model.dto.HistoriaDeUsuarioDto;
+import com.ifes.trabalhodw.model.dto.InputDto.EpicoInputDto;
+import com.ifes.trabalhodw.model.dto.InputDto.HistoriaDeUsuarioInputDto;
+import com.ifes.trabalhodw.model.dto.OutputDto.EpicoOutputDto;
+import com.ifes.trabalhodw.model.dto.OutputDto.HistoriaDeUsuarioOutputDto;
 import com.ifes.trabalhodw.model.entity.Epico;
 import com.ifes.trabalhodw.model.entity.HistoriaDeUsuario;
 import com.ifes.trabalhodw.repository.HistoriaDeUsuarioRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class HistoriaUsuarioApp implements IGenericApp<HistoriaDeUsuario, HistoriaDeUsuarioDto, UUID> {
+public class HistoriaUsuarioApp implements IGenericApp<HistoriaDeUsuarioOutputDto, HistoriaDeUsuarioInputDto,  UUID> {
 
     private final JpaRepository<HistoriaDeUsuario, UUID> repository;
-    private final IGenericApp<Epico, EpicoInputDto, UUID> epicoApp;
+    private final IGenericApp<EpicoOutputDto, EpicoInputDto, UUID> epicoApp;
+    private final ModelMapper mapper;
 
     @Autowired
-    public HistoriaUsuarioApp(HistoriaDeUsuarioRepository repository, EpicoApp epicoApp) {
+    public HistoriaUsuarioApp(HistoriaDeUsuarioRepository repository, EpicoApp epicoApp, ModelMapper mapper) {
         this.repository = repository;
         this.epicoApp = epicoApp;
+        this.mapper = mapper;
     }
 
     @Override
-    public HistoriaDeUsuario create(HistoriaDeUsuarioDto entity) {
-        HistoriaDeUsuario hist = new HistoriaDeUsuario();
-        hist.setTitulo(entity.getTitulo());
-        hist.setDescricao(entity.getDescricao());
-        hist.setRelevancia(entity.getPrioridade());
+    public HistoriaDeUsuarioOutputDto create(HistoriaDeUsuarioInputDto entity) {
+        HistoriaDeUsuario hist = this.mapper.map(entity, HistoriaDeUsuario.class);
+        Epico epico = mapper.map(epicoApp.getById(entity.getEpicoId()), Epico.class);
+        epico.setId(entity.getEpicoId());
+        hist.setEpico(epico);
+        return this.mapper.map(this.repository.save(hist), HistoriaDeUsuarioOutputDto.class);
+    }
 
-        if (entity.getEpicoId() != null) {
-            Epico epico = epicoApp.getById(entity.getEpicoId()).orElseGet(() -> null);
-            hist.setEpico(epico);
+    @Override
+    public HistoriaDeUsuarioOutputDto getById(UUID id) {
+        var model = this.repository.findById(id);
+        if (model.isEmpty()) {
+            throw new NotFoundErrorException("Historia de Usuario não encontrada");
         }
-        return repository.save(hist);
+        return this.mapper.map(model.get(), HistoriaDeUsuarioOutputDto.class);
     }
 
     @Override
-    public Optional<HistoriaDeUsuario> getById(UUID id) {
-        return this.repository.findById(id);
-    }
-
-    @Override
-    public void delete(UUID id) {
+    public void deleteById(UUID id) {
         this.repository.deleteById(id);
     }
 
     @Override
-    public HistoriaDeUsuario update(UUID id, HistoriaDeUsuarioDto entity) {
-        HistoriaDeUsuario hist = this.repository.findById(id).orElseThrow(() -> new NotFoundErrorException("Historia de Usuario não encontrada"));
-        if (entity.getTitulo() != null) {
-            hist.setTitulo(entity.getTitulo());
-        }
-        if (entity.getDescricao() != null) {
-            hist.setDescricao(entity.getDescricao());
-        }
-        if (entity.getPrioridade() != null) {
-            hist.setRelevancia(entity.getPrioridade());
-        }
-        if (entity.getEpicoId() != null) {
-            Epico epico = epicoApp.getById(entity.getEpicoId()).orElseGet(() -> null);
-            hist.setEpico(epico);
-        }
-        return this.repository.save(hist);
+    public HistoriaDeUsuarioOutputDto update(UUID id, HistoriaDeUsuarioInputDto entity) {
+       var histAntiga = this.repository.findById(id);
+       if (histAntiga.isEmpty()) {
+              throw new NotFoundErrorException("Historia de Usuario não encontrada");
+       }
+       HistoriaDeUsuario histNova = this.mapper.map(entity, HistoriaDeUsuario.class);
+       histNova.setId(id);
+       histNova.setEpico(histAntiga.get().getEpico());
+       histNova = this.repository.save(histNova);
+       HistoriaDeUsuarioOutputDto output = this.mapper.map(histNova, HistoriaDeUsuarioOutputDto.class);
+       output.setEpicoId(histNova.getEpico().getId());
+       return output;
     }
 
     @Override
-    public List<HistoriaDeUsuario> getAll() {
-        return this.repository.findAll();
+    public List<HistoriaDeUsuarioOutputDto> getAll() {
+        List<HistoriaDeUsuario> historias = this.repository.findAll();
+        List<HistoriaDeUsuarioOutputDto> outputs = new ArrayList<>();
+        for(HistoriaDeUsuario hist : historias) {
+            outputs.add(mapper.map(hist, HistoriaDeUsuarioOutputDto.class));
+        }
+        return outputs;
     }
 
 
