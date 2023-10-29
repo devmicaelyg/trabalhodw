@@ -33,16 +33,16 @@ public class EpicoController {
     }
 
     @GetMapping
-    public EpicoOutputDto getById(UUID id) {
+    public EpicoOutputDto getById(@RequestParam("Id") UUID id) {
         return epicoApp.getById(id);
     }
 
     @PutMapping
-    public EpicoOutputDto update(UUID id, EpicoInputDto epicoInputDto) {
+    public EpicoOutputDto update(@RequestParam("Id") UUID id, EpicoInputDto epicoInputDto) {
         return epicoApp.update(id, epicoInputDto);
     }
     @DeleteMapping
-    public void delete(UUID id) {
+    public void delete(@RequestParam("Id") UUID id) {
         epicoApp.deleteById(id);
     }
 }

@@ -1,6 +1,5 @@
 package com.ifes.trabalhodw.model.entity.tipos;
 
-import com.ifes.trabalhodw.model.entity.HistoriaDeUsuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,11 +19,11 @@ public class TipoHistoriaUsuario {
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     private UUID id;
-    
     private String descricao;
 
-    @ManyToOne
-    @JoinColumn(name = "tipo_epico_id")
-    private TipoEpico tipoEpico;
-
+    @ManyToMany
+    @JoinTable(name = "dependencias_tipo_historia_usuario",
+            joinColumns = @JoinColumn(name = "tipo_historia_usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "dependencia_id"))
+    private List<TipoHistoriaUsuario> dependencias;
 }
