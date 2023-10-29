@@ -3,14 +3,14 @@ package com.ifes.trabalhodw.application;
 import java.util.List;
 import java.util.Optional;
 
-public interface IGenericApp<T, InputDto, Id> {
-    T create(InputDto entity);
+public interface IGenericApp<OutputDto, InputDto, Id> {
+    OutputDto create(InputDto entity);
 
-    Optional<T> getById(Id id);
+    OutputDto getById(Id id);
 
-    void delete(Id id);
+    void deleteById(Id id);
 
-    List<T> getAll();
+    List<OutputDto> getAll();
 
-    T update(Id id, InputDto entity);
+    OutputDto update(Id id, InputDto entity);
 }
