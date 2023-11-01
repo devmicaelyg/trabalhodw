@@ -1,4 +1,4 @@
-package com.ifes.trabalhodw.model.entity;
+package com.ifes.trabalhodw.model.entity.tipos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
