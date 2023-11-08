@@ -20,6 +20,7 @@ public class HistoriaDeUsuarioController {
     public HistoriaDeUsuarioController(HistoriaUsuarioApp app) {
         this.app = app;
     }
+
     @GetMapping("/all")
     public List<HistoriaDeUsuarioOutputDto> getAllHistoriaDeUsuario() {
         return app.getAll();
@@ -29,6 +30,7 @@ public class HistoriaDeUsuarioController {
     public HistoriaDeUsuarioOutputDto getHistoriaDeUsuario(@RequestParam("id") UUID id) {
         return app.getById(id);
     }
+
     @PostMapping
     public HistoriaDeUsuarioOutputDto createHistoriaDeUsuario(@RequestBody HistoriaDeUsuarioInputDto dto) {
         return app.create(dto);

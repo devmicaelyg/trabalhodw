@@ -1,6 +1,7 @@
 package com.ifes.trabalhodw.model.entity;
 
 import com.ifes.trabalhodw.model.entity.tipos.TipoEpico;
+import com.ifes.trabalhodw.model.entity.tipos.TipoHistoriaUsuario;
 import com.ifes.trabalhodw.model.entity.tipos.TipoPrioridade;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,8 +24,9 @@ public class Epico{
     private String titulo;
     private String descricao;
     private TipoPrioridade relevancia;
-    private Date dataCriacao;
-    //private String categoria;
+    private String categoria;
+
+
     @ManyToOne
     @JoinColumn(name = "tipo_epico_id")
     private TipoEpico tipoEpico;

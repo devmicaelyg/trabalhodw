@@ -1,11 +1,10 @@
 package com.ifes.trabalhodw.model.entity.tipos;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -17,6 +16,9 @@ public class TipoEpico {
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     private UUID id;
     private String descricao;
+
+    @OneToMany(mappedBy = "tipoEpico")
+    private List<TipoHistoriaUsuario> tiposHistoriaUsuario;
 
 
 }
