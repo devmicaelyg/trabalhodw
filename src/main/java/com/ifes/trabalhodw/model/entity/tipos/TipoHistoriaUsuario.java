@@ -26,4 +26,7 @@ public class TipoHistoriaUsuario {
             joinColumns = @JoinColumn(name = "tipo_historia_usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "dependencia_id"))
     private List<TipoHistoriaUsuario> dependencias;
+
+    @ManyToOne
+    private TipoEpico tipoEpico;
 }

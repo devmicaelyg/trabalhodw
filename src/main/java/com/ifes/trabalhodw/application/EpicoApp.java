@@ -51,8 +51,7 @@ public class EpicoApp implements IGenericApp<EpicoOutputDto, EpicoInputDto, UUID
         List<EpicoOutputDto> outputDtos = new ArrayList<>();
         List<Epico> epicos = repository.findAll();
         for (Epico epico : epicos) {
-            EpicoOutputDto outputDto = modelMapper.map(epico, EpicoOutputDto.class);
-            outputDtos.add(outputDto);
+            outputDtos.add(modelMapper.map(epico, EpicoOutputDto.class));
         }
         return outputDtos;
     }
