@@ -1,9 +1,7 @@
 package com.ifes.trabalhodw.application;
 
 import com.ifes.trabalhodw.exception.NotFoundErrorException;
-import com.ifes.trabalhodw.model.dto.InputDto.EpicoInputDto;
 import com.ifes.trabalhodw.model.dto.InputDto.HistoriaDeUsuarioInputDto;
-import com.ifes.trabalhodw.model.dto.OutputDto.EpicoOutputDto;
 import com.ifes.trabalhodw.model.dto.OutputDto.HistoriaDeUsuarioOutputDto;
 import com.ifes.trabalhodw.model.entity.Epico;
 import com.ifes.trabalhodw.model.entity.HistoriaDeUsuario;
@@ -21,20 +19,18 @@ import java.util.UUID;
 public class HistoriaUsuarioApp implements IGenericApp<HistoriaDeUsuarioOutputDto, HistoriaDeUsuarioInputDto,  UUID> {
 
     private final JpaRepository<HistoriaDeUsuario, UUID> repository;
-    private final IGenericApp<EpicoOutputDto, EpicoInputDto, UUID> epicoApp;
     private final ModelMapper mapper;
 
     @Autowired
-    public HistoriaUsuarioApp(HistoriaDeUsuarioRepository repository, EpicoApp epicoApp, ModelMapper mapper) {
+    public HistoriaUsuarioApp(HistoriaDeUsuarioRepository repository, ModelMapper mapper) {
         this.repository = repository;
-        this.epicoApp = epicoApp;
         this.mapper = mapper;
     }
 
     @Override
     public HistoriaDeUsuarioOutputDto create(HistoriaDeUsuarioInputDto entity) {
         HistoriaDeUsuario hist = this.mapper.map(entity, HistoriaDeUsuario.class);
-        Epico epico = mapper.map(epicoApp.getById(entity.getEpicoId()), Epico.class);
+        Epico epico = new Epico();
         epico.setId(entity.getEpicoId());
         hist.setEpico(epico);
         return this.mapper.map(this.repository.save(hist), HistoriaDeUsuarioOutputDto.class);

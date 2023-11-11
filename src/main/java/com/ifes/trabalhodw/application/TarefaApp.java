@@ -1,9 +1,14 @@
 package com.ifes.trabalhodw.application;
 
 import com.ifes.trabalhodw.exception.NotFoundErrorException;
+import com.ifes.trabalhodw.model.dto.InputDto.HistoriaDeUsuarioInputDto;
 import com.ifes.trabalhodw.model.dto.InputDto.TarefaInputDto;
 import com.ifes.trabalhodw.model.dto.OutputDto.TarefaOutputDto;
+import com.ifes.trabalhodw.model.entity.HistoriaDeUsuario;
+import com.ifes.trabalhodw.model.entity.StatusTarefa;
 import com.ifes.trabalhodw.model.entity.Tarefa;
+import com.ifes.trabalhodw.model.entity.tipos.TipoHistoriaUsuario;
+import com.ifes.trabalhodw.model.entity.tipos.TipoTarefa;
 import com.ifes.trabalhodw.repository.ITarefaRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,4 +71,6 @@ public class TarefaApp implements IGenericApp<TarefaOutputDto, TarefaInputDto, U
 
         return mapper.map(tarefaNova, TarefaOutputDto.class);
     }
+
+
 }

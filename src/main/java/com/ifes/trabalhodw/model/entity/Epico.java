@@ -41,4 +41,7 @@ public class Epico{
             inverseJoinColumns = @JoinColumn(name = "dependencia_id"))
     private List<Epico> dependencias;
 
+    @OneToMany
+    private List<HistoriaDeUsuario> historiasDeUsuario;
+
 }

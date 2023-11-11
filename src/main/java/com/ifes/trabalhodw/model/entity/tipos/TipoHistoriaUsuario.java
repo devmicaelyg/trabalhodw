@@ -29,4 +29,7 @@ public class TipoHistoriaUsuario {
 
     @ManyToOne
     private TipoEpico tipoEpico;
+
+    @OneToMany
+    private List<TipoTarefa> tipoTarefas;
 }
