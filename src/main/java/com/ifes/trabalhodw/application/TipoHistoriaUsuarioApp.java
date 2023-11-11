@@ -1,6 +1,9 @@
 package com.ifes.trabalhodw.application;
 
 import com.ifes.trabalhodw.exception.NotFoundErrorException;
+import com.ifes.trabalhodw.model.dto.InputDto.TipoHistoriaUsuarioInputDto;
+import com.ifes.trabalhodw.model.dto.OutputDto.TipoHistoriaUsuarioOutputDto;
+
 import com.ifes.trabalhodw.model.entity.Epico;
 import com.ifes.trabalhodw.model.entity.tipos.TipoHistoriaUsuario;
 import com.ifes.trabalhodw.repository.ITipoHistoriaUsuarioRepository;
@@ -15,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class TipoHistoriaUsuarioApp implements IGenericApp<TipoTar> {
+public class TipoHistoriaUsuarioApp implements IGenericApp<TipoHistoriaUsuarioOutputDto, TipoHistoriaUsuarioInputDto, UUID> {
 
     @Autowired
     private ITipoHistoriaUsuarioRepository repository;
@@ -24,32 +27,31 @@ public class TipoHistoriaUsuarioApp implements IGenericApp<TipoTar> {
     private ModelMapper modelMapper;
 
     @Override
-    public List<TipoHistoriaUsuarioDto> getAll() {
-        Type targetType = new TypeToken<List<TipoHistoriaUsuarioDto>>() {}.getType();
+    public List<TipoHistoriaUsuarioOutputDto> getAll() {
+        Type targetType = new TypeToken<List<TipoHistoriaUsuarioOutputDto>>() {}.getType();
         var listaHist = repository.findAll();
 
-        List<TipoHistoriaUsuarioDto> listaFinal = modelMapper.map(listaHist, targetType);
+        List<TipoHistoriaUsuarioOutputDto> listaFinal = modelMapper.map(listaHist, targetType);
         return listaFinal;
     }
 
     @Override
-    public TipoHistoriaUsuarioDto create(TipoHistoriaUsuarioDto entity) {
-        entity.ValidarTipoHistoriaUsuario();
+    public TipoHistoriaUsuarioOutputDto create(TipoHistoriaUsuarioInputDto entity) {
 
         var model = modelMapper.map(entity, TipoHistoriaUsuario.class);
         var novoTipo = repository.save(model);
 
-        return modelMapper.map(novoTipo, TipoHistoriaUsuarioDto.class);
+        return modelMapper.map(novoTipo, TipoHistoriaUsuarioOutputDto.class);
     }
 
     @Override
-    public TipoHistoriaUsuarioDto getById(UUID id) {
+    public TipoHistoriaUsuarioOutputDto getById(UUID id) {
         var model = repository.findById(id);
 
         if(model.isEmpty())
             throw new NotFoundErrorException("Não foi encontrado uma história de usuário com esse ID");
 
-        return modelMapper.map(model.get(), TipoHistoriaUsuarioDto.class);
+        return modelMapper.map(model.get(), TipoHistoriaUsuarioOutputDto.class);
     }
 
     @Override
@@ -59,15 +61,15 @@ public class TipoHistoriaUsuarioApp implements IGenericApp<TipoTar> {
     }
 
     @Override
-    public TipoHistoriaUsuarioDto update(TipoHistoriaUsuarioDto entity) {
-        if(!repository.existsById(entity.getId()))
+    public TipoHistoriaUsuarioOutputDto update(UUID id,TipoHistoriaUsuarioInputDto entity) {
+        if(!repository.existsById(id))
             throw new NotFoundErrorException("Não foi encontrar esse tipo de história de usuário com esse ID");
 
         TipoHistoriaUsuario tipo = modelMapper.map(entity, TipoHistoriaUsuario.class);
-        tipo.setId(entity.getId());
+        tipo.setId(id);
 
         TipoHistoriaUsuario tipoHistoriaUsuario = repository.save(tipo);
-        return modelMapper.map(tipoHistoriaUsuario, TipoHistoriaUsuarioDto.class);
+        return modelMapper.map(tipoHistoriaUsuario, TipoHistoriaUsuarioOutputDto.class);
     }
 
     public List<TipoHistoriaUsuario> getByEpico(Epico epico){

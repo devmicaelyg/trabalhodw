@@ -1,11 +1,8 @@
 package com.ifes.trabalhodw.controller;
 
-import com.ifes.trabalhodw.application.EpicoApp;
-import com.ifes.trabalhodw.application.IGenericApp;
+import com.ifes.trabalhodw.IGenericApp;
 import com.ifes.trabalhodw.application.TarefaApp;
-import com.ifes.trabalhodw.model.dto.InputDto.EpicoInputDto;
 import com.ifes.trabalhodw.model.dto.InputDto.TarefaInputDto;
-import com.ifes.trabalhodw.model.dto.OutputDto.EpicoOutputDto;
 import com.ifes.trabalhodw.model.dto.OutputDto.TarefaOutputDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -1,12 +1,8 @@
 package com.ifes.trabalhodw.controller;
 
 import com.ifes.trabalhodw.application.ProjetoApp;
-import com.ifes.trabalhodw.model.dto.ProjetoDto;
-import com.ifes.trabalhodw.model.entity.Projeto;
-import com.ifes.trabalhodw.repository.IProjetoRepository;
-import org.modelmapper.ModelMapper;
+import com.ifes.trabalhodw.model.dto.OutputDto.ProjetoOutputDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,18 +17,18 @@ public class ProjetoController {
     private ProjetoApp application;
 
     @GetMapping("/all")
-    public List<ProjetoDto> getAll(){
+    public List<ProjetoOutputDto> getAll(){
         return application.getAll();
     }
 
     @GetMapping
-    public ProjetoDto getById(@RequestParam("Id") UUID id) { return application.getById(id);}
+    public ProjetoOutputDto getById(@RequestParam("Id") UUID id) { return application.getById(id);}
 
     @PostMapping
-    public ProjetoDto create(@RequestBody ProjetoDto projeto){ return application.create(projeto); }
+    public ProjetoOutputDto create(@RequestBody ProjetoOutputDto projeto){ return application.create(projeto); }
 
     @PutMapping
-    public ProjetoDto update(@RequestParam("Id") UUID id, @RequestBody ProjetoDto projeto){ return application.create(projeto); }
+    public ProjetoOutputDto update(@RequestParam("Id") UUID id, @RequestBody ProjetoOutputDto projeto){ return application.create(projeto); }
 
     @DeleteMapping
     public void delete(@RequestParam("Id") UUID id){ application.deleteById(id); }

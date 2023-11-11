@@ -1,8 +1,8 @@
 package com.ifes.trabalhodw.application;
 
-import com.ifes.trabalhodw.application.generic.IGenericApplication;
 import com.ifes.trabalhodw.exception.NotFoundErrorException;
-import com.ifes.trabalhodw.model.dto.ProjetoDto;
+import com.ifes.trabalhodw.model.dto.InputDto.ProjetoInputDto;
+import com.ifes.trabalhodw.model.dto.OutputDto.ProjetoOutputDto;
 import com.ifes.trabalhodw.model.entity.Projeto;
 import com.ifes.trabalhodw.repository.IProjetoRepository;
 import org.modelmapper.ModelMapper;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class ProjetoApp implements IGenericApplication<ProjetoDto> {
+public class ProjetoApp implements IGenericApp<ProjetoOutputDto, ProjetoInputDto, UUID> {
     @Autowired
     private IProjetoRepository repository;
 
@@ -23,31 +23,31 @@ public class ProjetoApp implements IGenericApplication<ProjetoDto> {
     private ModelMapper modelMapper;
 
    @Override
-   public List<ProjetoDto> getAll(){
-        Type targetType = new TypeToken<List<ProjetoDto>>() {}.getType();
+   public List<ProjetoOutputDto> getAll(){
+        Type targetType = new TypeToken<List<ProjetoOutputDto>>() {}.getType();
         var listaProduto = repository.findAll();
 
-        List<ProjetoDto> listaProdutoDto = modelMapper.map(listaProduto, targetType);
+        List<ProjetoOutputDto> listaProdutoDto = modelMapper.map(listaProduto, targetType);
         return listaProdutoDto;
    }
 
     @Override
-    public ProjetoDto create(ProjetoDto entity) {
+    public ProjetoOutputDto create(ProjetoInputDto entity) {
        entity.ValidarProjeto();
 
        var model = modelMapper.map(entity, Projeto.class);
        var projetoNovo = repository.save(model);
-       return modelMapper.map(projetoNovo, ProjetoDto.class);
+       return modelMapper.map(projetoNovo, ProjetoOutputDto.class);
     }
 
     @Override
-    public ProjetoDto getById(UUID id) {
+    public ProjetoOutputDto getById(UUID id) {
         var model = repository.findById(id);
 
         if(model.isEmpty())
             throw new NotFoundErrorException("Não foi encontrado um projeto com esse ID");
 
-        return modelMapper.map(model.get(), ProjetoDto.class);
+        return modelMapper.map(model.get(), ProjetoOutputDto.class);
     }
 
     @Override
@@ -56,13 +56,13 @@ public class ProjetoApp implements IGenericApplication<ProjetoDto> {
     }
 
     @Override
-    public ProjetoDto update(UUID id, ProjetoDto entity) {
+    public ProjetoOutputDto update(UUID id, ProjetoInputDto entity) {
         //var exists = repository.findById(id);
         Projeto projeto = modelMapper.map(entity, Projeto.class);
         projeto.setId(id);
 
         Projeto projetoAtt = repository.save(projeto);
-        return modelMapper.map(projetoAtt, ProjetoDto.class);
+        return modelMapper.map(projetoAtt, ProjetoOutputDto.class);
     }
 
 

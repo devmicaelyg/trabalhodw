@@ -1,7 +1,8 @@
 package com.ifes.trabalhodw.controller;
 
 import com.ifes.trabalhodw.application.TipoHistoriaUsuarioApp;
-import com.ifes.trabalhodw.model.dto.tipos.TipoHistoriaUsuarioDto;
+import com.ifes.trabalhodw.model.dto.InputDto.TipoHistoriaUsuarioInputDto;
+import com.ifes.trabalhodw.model.dto.OutputDto.TipoHistoriaUsuarioOutputDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,19 +16,19 @@ public class TipoHistoriaUsuarioController {
     private TipoHistoriaUsuarioApp application;
 
     @GetMapping("/all")
-    public List<TipoHistoriaUsuarioDto> getAll(){
+    public List<TipoHistoriaUsuarioOutputDto> getAll(){
         return application.getAll();
     }
 
     @GetMapping
-    public TipoHistoriaUsuarioDto getById(@RequestParam("Id") UUID id) { return application.getById(id);}
+    public TipoHistoriaUsuarioOutputDto getById(@RequestParam("Id") UUID id) { return application.getById(id);}
 
     @PostMapping
-    public TipoHistoriaUsuarioDto create(@RequestBody TipoHistoriaUsuarioDto tipo){ return application.create(tipo); }
+    public TipoHistoriaUsuarioOutputDto create(@RequestBody TipoHistoriaUsuarioInputDto tipo){ return application.create(tipo); }
 
     @PutMapping
-    public TipoHistoriaUsuarioDto update(@RequestBody TipoHistoriaUsuarioDto tipo){
-        return application.update(tipo);
+    public TipoHistoriaUsuarioOutputDto update(@RequestParam("Id") UUID id, @RequestBody TipoHistoriaUsuarioInputDto tipo){
+        return application.update(id ,tipo);
     }
 
     @DeleteMapping

@@ -7,11 +7,16 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class TipoHistoriaUsuarioOutputDto {
+@NoArgsConstructor
+public class ProjetoOutputDto {
     private UUID id;
+    private String nome;
     private String descricao;
-    private UUID tipoEpicoId;
 
+
+    public void ValidarProjeto(){
+        if(this.getNome().isEmpty())
+            throw new RuntimeException("O nome do projeto é obrigatório.");
+    }
 }
