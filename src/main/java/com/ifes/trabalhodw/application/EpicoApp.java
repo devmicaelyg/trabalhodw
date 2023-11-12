@@ -30,9 +30,9 @@ public class EpicoApp implements IGenericApp<EpicoOutputDto, EpicoInputDto, UUID
     @Override
     public EpicoOutputDto create(EpicoInputDto entity) {
         var epico = modelMapper.map(entity, Epico.class);
-        String obejtivo = pegarUltimaPalavra(epico.getDescricao());
-        generationApp.generateHistoriaDeUsuario(epico, obejtivo);
         epico = repository.save(epico);
+        String obejtivo = pegarUltimaPalavra(epico.getDescricao());
+        generationApp.generateHistoriaDeUsuario(epico, obejtivo, epico.getTipoEpico().getTiposHistoriaUsuario());
         return modelMapper.map(epico, EpicoOutputDto.class);
     }
 

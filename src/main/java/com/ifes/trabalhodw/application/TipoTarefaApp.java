@@ -3,6 +3,7 @@ package com.ifes.trabalhodw.application;
 import com.ifes.trabalhodw.exception.NotFoundErrorException;
 import com.ifes.trabalhodw.model.dto.InputDto.TipoTarefaInputDto;
 import com.ifes.trabalhodw.model.dto.OutputDto.TipoTarefaOutputDto;
+import com.ifes.trabalhodw.model.entity.tipos.TipoHistoriaUsuario;
 import com.ifes.trabalhodw.model.entity.tipos.TipoTarefa;
 import com.ifes.trabalhodw.repository.ITipoTarefaRepository;
 import org.modelmapper.ModelMapper;
@@ -34,11 +35,9 @@ public class TipoTarefaApp implements IGenericApp<TipoTarefaOutputDto, TipoTaref
 
     @Override
     public TipoTarefaOutputDto create(TipoTarefaInputDto entity) {
-        entity.ValidarTipoTarefa();
 
         var model = modelMapper.map(entity, TipoTarefa.class);
         var tipoTarefa = repository.save(model);
-
         return modelMapper.map(tipoTarefa, TipoTarefaOutputDto.class);
     }
 
@@ -54,7 +53,6 @@ public class TipoTarefaApp implements IGenericApp<TipoTarefaOutputDto, TipoTaref
 
     @Override
     public void deleteById(UUID id) {
-        getById(id);
         repository.deleteById(id);
     }
 
@@ -62,8 +60,7 @@ public class TipoTarefaApp implements IGenericApp<TipoTarefaOutputDto, TipoTaref
     public TipoTarefaOutputDto update(UUID id, TipoTarefaInputDto entity) {
         TipoTarefa tipo = modelMapper.map(entity, TipoTarefa.class);
         tipo.setId(id);
-
-        TipoTarefa tipoTarefa = repository.save(tipo);
-        return modelMapper.map(tipoTarefa, TipoTarefaOutputDto.class);
+        tipo  = repository.save(tipo);
+        return modelMapper.map(tipo, TipoTarefaOutputDto.class);
     }
 }

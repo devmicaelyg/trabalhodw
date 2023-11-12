@@ -1,9 +1,11 @@
 package com.ifes.trabalhodw.model.entity.tipos;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,10 +20,9 @@ public class TipoTarefa {
     
     private String descricao;
 
-    @ManyToOne
-    @JoinColumn(name = "tipo_historia_usuario_id")
-    private TipoHistoriaUsuario tipoHistoriaUsuario;
-
     @ManyToMany
     private List<TipoTarefa> dependecias;
+
+    @ManyToOne
+    private TipoHistoriaUsuario tipoHistoriaUsuario;
 }

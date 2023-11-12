@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -39,9 +40,9 @@ public class Epico{
     @JoinTable(name = "dependencias_epico",
             joinColumns = @JoinColumn(name = "epico_id"),
             inverseJoinColumns = @JoinColumn(name = "dependencia_id"))
-    private List<Epico> dependencias;
+    private List<Epico> dependencias = new ArrayList<>();
 
-    @OneToMany
-    private List<HistoriaDeUsuario> historiasDeUsuario;
+    @OneToMany(mappedBy = "epico", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HistoriaDeUsuario> historiasDeUsuario = new ArrayList<>();
 
 }

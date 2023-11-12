@@ -7,11 +7,12 @@ import com.ifes.trabalhodw.model.entity.Epico;
 import com.ifes.trabalhodw.model.entity.HistoriaDeUsuario;
 import com.ifes.trabalhodw.repository.HistoriaDeUsuarioRepository;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.UUID;
 
@@ -67,11 +68,9 @@ public class HistoriaUsuarioApp implements IGenericApp<HistoriaDeUsuarioOutputDt
 
     @Override
     public List<HistoriaDeUsuarioOutputDto> getAll() {
+        Type targetType = new TypeToken<List<HistoriaDeUsuarioOutputDto>>() {}.getType();
         List<HistoriaDeUsuario> historias = this.repository.findAll();
-        List<HistoriaDeUsuarioOutputDto> outputs = new ArrayList<>();
-        for(HistoriaDeUsuario hist : historias) {
-            outputs.add(mapper.map(hist, HistoriaDeUsuarioOutputDto.class));
-        }
+        List<HistoriaDeUsuarioOutputDto> outputs = this.mapper.map(historias, targetType);
         return outputs;
     }
 

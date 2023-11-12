@@ -1,6 +1,7 @@
 package com.ifes.trabalhodw.controller;
 
 import com.ifes.trabalhodw.application.ProjetoApp;
+import com.ifes.trabalhodw.model.dto.InputDto.ProjetoInputDto;
 import com.ifes.trabalhodw.model.dto.OutputDto.ProjetoOutputDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,10 +26,10 @@ public class ProjetoController {
     public ProjetoOutputDto getById(@RequestParam("Id") UUID id) { return application.getById(id);}
 
     @PostMapping
-    public ProjetoOutputDto create(@RequestBody ProjetoOutputDto projeto){ return application.create(projeto); }
+    public ProjetoOutputDto create(@RequestBody ProjetoInputDto projeto){ return application.create(projeto); }
 
     @PutMapping
-    public ProjetoOutputDto update(@RequestParam("Id") UUID id, @RequestBody ProjetoOutputDto projeto){ return application.create(projeto); }
+    public ProjetoOutputDto update(@RequestParam("Id") UUID id, @RequestBody ProjetoInputDto projeto){ return application.update(id, projeto); }
 
     @DeleteMapping
     public void delete(@RequestParam("Id") UUID id){ application.deleteById(id); }

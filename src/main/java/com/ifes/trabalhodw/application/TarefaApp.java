@@ -32,7 +32,9 @@ public class TarefaApp implements IGenericApp<TarefaOutputDto, TarefaInputDto, U
 
     @Override
     public TarefaOutputDto create(TarefaInputDto entity) {
-        return null;
+        Tarefa tarefa = mapper.map(entity, Tarefa.class);
+        tarefa = tarefaRepository.save(tarefa);
+        return mapper.map(tarefaRepository.save(tarefa), TarefaOutputDto.class);
     }
 
     @Override

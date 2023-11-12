@@ -1,6 +1,6 @@
 package com.ifes.trabalhodw.controller;
 
-import com.ifes.trabalhodw.IGenericApp;
+import com.ifes.trabalhodw.application.IGenericApp;
 import com.ifes.trabalhodw.application.TarefaApp;
 import com.ifes.trabalhodw.model.dto.InputDto.TarefaInputDto;
 import com.ifes.trabalhodw.model.dto.OutputDto.TarefaOutputDto;

@@ -5,11 +5,13 @@ import com.ifes.trabalhodw.model.dto.InputDto.TipoHistoriaUsuarioInputDto;
 import com.ifes.trabalhodw.model.dto.OutputDto.TipoHistoriaUsuarioOutputDto;
 
 import com.ifes.trabalhodw.model.entity.Epico;
+import com.ifes.trabalhodw.model.entity.tipos.TipoEpico;
 import com.ifes.trabalhodw.model.entity.tipos.TipoHistoriaUsuario;
 import com.ifes.trabalhodw.repository.ITipoHistoriaUsuarioRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
@@ -20,11 +22,15 @@ import java.util.UUID;
 @Service
 public class TipoHistoriaUsuarioApp implements IGenericApp<TipoHistoriaUsuarioOutputDto, TipoHistoriaUsuarioInputDto, UUID> {
 
-    @Autowired
-    private ITipoHistoriaUsuarioRepository repository;
+    private final JpaRepository<TipoHistoriaUsuario, UUID> repository;
+
+    private ModelMapper modelMapper;
 
     @Autowired
-    private ModelMapper modelMapper;
+    public TipoHistoriaUsuarioApp(ITipoHistoriaUsuarioRepository repository, ModelMapper modelMapper) {
+        this.repository = repository;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public List<TipoHistoriaUsuarioOutputDto> getAll() {
@@ -72,19 +78,9 @@ public class TipoHistoriaUsuarioApp implements IGenericApp<TipoHistoriaUsuarioOu
         return modelMapper.map(tipoHistoriaUsuario, TipoHistoriaUsuarioOutputDto.class);
     }
 
-    public List<TipoHistoriaUsuario> getByEpico(Epico epico){
+    public List<TipoHistoriaUsuario> getByEpico(TipoEpico tipoEpico){
         List<TipoHistoriaUsuario> historiasDeUmEpic = new ArrayList<>();
-
-        if(epico.getTipoEpico().getDescricao().equals("CRUD+L")){
-            var tipos = repository.findAll();
-
-            tipos.forEach(h -> {
-                if(h.getTipoEpico().getId().equals(epico.getTipoEpico().getId())){
-                    historiasDeUmEpic.add(h);
-                }
-            });
-        }
-
+        var tipos = repository.findAll();
         return historiasDeUmEpic;
     }
 }
