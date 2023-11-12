@@ -1,22 +1,22 @@
 package com.ifes.trabalhodw.model.dto.OutputDto;
 
-import com.ifes.trabalhodw.model.entity.StatusTarefa;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TarefaOutputDto {
+public class ProjetoOutputDto {
     private UUID id;
-    private String titulo;
+    private String nome;
     private String descricao;
-    private StatusTarefa statusTarefa;
-    private UUID historiaDeUsuario;
-    private List<TarefaOutputDto> dependencias;
 
+
+    public void ValidarProjeto(){
+        if(this.getNome().isEmpty())
+            throw new RuntimeException("O nome do projeto é obrigatório.");
+    }
 }

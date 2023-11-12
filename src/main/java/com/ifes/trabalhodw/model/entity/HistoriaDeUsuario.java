@@ -7,10 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Data
@@ -22,7 +19,7 @@ public class HistoriaDeUsuario {
 
     private String titulo;
     private String descricao;
-    private TipoPrioridade relevancia;
+    private TipoPrioridade prioridade;
     private boolean isFinalizada = false;
     @NotNull
     private Date dataCriacao = new Date();
@@ -39,9 +36,9 @@ public class HistoriaDeUsuario {
     @JoinTable(name = "dependencias_historia_usuario",
             joinColumns = @JoinColumn(name = "historia_usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "dependencia_id"))
-    private List<HistoriaDeUsuario> dependencias;
+    private List<HistoriaDeUsuario> dependencias = new ArrayList<>();
 
-    @OneToMany
-    private List<Tarefa> tarefas;
+    @OneToMany(mappedBy = "historiaDeUsuario")
+    private List<Tarefa> tarefas = new ArrayList<>();
 
 }

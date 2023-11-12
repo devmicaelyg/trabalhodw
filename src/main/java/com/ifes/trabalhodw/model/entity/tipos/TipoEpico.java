@@ -17,7 +17,7 @@ public class TipoEpico {
     private UUID id;
     private String descricao;
 
-    @OneToMany(mappedBy = "tipoEpico")
+    @OneToMany(mappedBy = "tipoEpico", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TipoHistoriaUsuario> tiposHistoriaUsuario;
 
 

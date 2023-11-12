@@ -1,7 +1,6 @@
 package com.ifes.trabalhodw.controller;
 
 import com.ifes.trabalhodw.application.EpicoApp;
-import com.ifes.trabalhodw.application.IGenericApp;
 import com.ifes.trabalhodw.model.dto.InputDto.EpicoInputDto;
 import com.ifes.trabalhodw.model.dto.OutputDto.EpicoOutputDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,7 @@ import java.util.UUID;
 public class EpicoController {
     // implemente o CRUD usando EpicoApp
 
-    private final IGenericApp<EpicoOutputDto, EpicoInputDto, UUID> epicoApp;
+    private final EpicoApp epicoApp;
 
     @Autowired
     public EpicoController(EpicoApp epicoApp) {

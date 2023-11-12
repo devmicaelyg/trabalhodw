@@ -1,6 +1,5 @@
 package com.ifes.trabalhodw.model.dto.OutputDto;
 
-import com.ifes.trabalhodw.model.entity.StatusTarefa;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,14 +8,12 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class TarefaOutputDto {
+@AllArgsConstructor
+public class TipoHistoriaUsuarioOutputDto {
     private UUID id;
-    private String titulo;
     private String descricao;
-    private StatusTarefa statusTarefa;
-    private UUID historiaDeUsuario;
-    private List<TarefaOutputDto> dependencias;
+    private UUID tipoEpicoId;
+    private List<TarefaOutputDto> tarefas;
 
 }

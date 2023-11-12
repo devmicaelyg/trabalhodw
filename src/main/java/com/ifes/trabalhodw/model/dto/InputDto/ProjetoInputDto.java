@@ -1,4 +1,4 @@
-package com.ifes.trabalhodw.model.dto;
+package com.ifes.trabalhodw.model.dto.InputDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,8 +9,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProjetoDto {
-    private UUID id;
+public class ProjetoInputDto {
     private String nome;
     private String descricao;
 

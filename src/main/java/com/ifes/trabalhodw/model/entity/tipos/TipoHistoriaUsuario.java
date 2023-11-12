@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,6 +28,9 @@ public class TipoHistoriaUsuario {
             inverseJoinColumns = @JoinColumn(name = "dependencia_id"))
     private List<TipoHistoriaUsuario> dependencias;
 
-    @ManyToOne
+    @OneToMany(mappedBy = "tipoHistoriaUsuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TipoTarefa> tiposTarefa = new ArrayList<>();
+
+    @ManyToOne(cascade = CascadeType.ALL)
     private TipoEpico tipoEpico;
 }

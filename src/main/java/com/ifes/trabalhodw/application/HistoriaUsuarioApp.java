@@ -1,19 +1,18 @@
 package com.ifes.trabalhodw.application;
 
 import com.ifes.trabalhodw.exception.NotFoundErrorException;
-import com.ifes.trabalhodw.model.dto.InputDto.EpicoInputDto;
 import com.ifes.trabalhodw.model.dto.InputDto.HistoriaDeUsuarioInputDto;
-import com.ifes.trabalhodw.model.dto.OutputDto.EpicoOutputDto;
 import com.ifes.trabalhodw.model.dto.OutputDto.HistoriaDeUsuarioOutputDto;
 import com.ifes.trabalhodw.model.entity.Epico;
 import com.ifes.trabalhodw.model.entity.HistoriaDeUsuario;
 import com.ifes.trabalhodw.repository.HistoriaDeUsuarioRepository;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,20 +20,18 @@ import java.util.UUID;
 public class HistoriaUsuarioApp implements IGenericApp<HistoriaDeUsuarioOutputDto, HistoriaDeUsuarioInputDto,  UUID> {
 
     private final JpaRepository<HistoriaDeUsuario, UUID> repository;
-    private final IGenericApp<EpicoOutputDto, EpicoInputDto, UUID> epicoApp;
     private final ModelMapper mapper;
 
     @Autowired
-    public HistoriaUsuarioApp(HistoriaDeUsuarioRepository repository, EpicoApp epicoApp, ModelMapper mapper) {
+    public HistoriaUsuarioApp(HistoriaDeUsuarioRepository repository, ModelMapper mapper) {
         this.repository = repository;
-        this.epicoApp = epicoApp;
         this.mapper = mapper;
     }
 
     @Override
     public HistoriaDeUsuarioOutputDto create(HistoriaDeUsuarioInputDto entity) {
         HistoriaDeUsuario hist = this.mapper.map(entity, HistoriaDeUsuario.class);
-        Epico epico = mapper.map(epicoApp.getById(entity.getEpicoId()), Epico.class);
+        Epico epico = new Epico();
         epico.setId(entity.getEpicoId());
         hist.setEpico(epico);
         return this.mapper.map(this.repository.save(hist), HistoriaDeUsuarioOutputDto.class);
@@ -71,11 +68,9 @@ public class HistoriaUsuarioApp implements IGenericApp<HistoriaDeUsuarioOutputDt
 
     @Override
     public List<HistoriaDeUsuarioOutputDto> getAll() {
+        Type targetType = new TypeToken<List<HistoriaDeUsuarioOutputDto>>() {}.getType();
         List<HistoriaDeUsuario> historias = this.repository.findAll();
-        List<HistoriaDeUsuarioOutputDto> outputs = new ArrayList<>();
-        for(HistoriaDeUsuario hist : historias) {
-            outputs.add(mapper.map(hist, HistoriaDeUsuarioOutputDto.class));
-        }
+        List<HistoriaDeUsuarioOutputDto> outputs = this.mapper.map(historias, targetType);
         return outputs;
     }
 
