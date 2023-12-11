@@ -1,6 +1,7 @@
 package com.ifes.trabalhodw.model.dto.OutputDto;
 
 import com.ifes.trabalhodw.model.dto.InputDto.HistoriaDeUsuarioInputDto;
+import com.ifes.trabalhodw.model.dto.InputDto.TipoEpicoInputDto;
 import com.ifes.trabalhodw.model.entity.tipos.TipoPrioridade;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,7 +20,7 @@ public class EpicoOutputDto {
     private TipoPrioridade relevancia;
     private String categoria;
     private List<HistoriaDeUsuarioOutputDto> historiasDeUsuario;
-    private UUID tipoEpicoId;
+    private TipoEpicoOutputDto tipoEpico;
     private List<UUID> dependencias;
-    private UUID projetoId;
+    private ProjetoOutputDto projeto;
 }

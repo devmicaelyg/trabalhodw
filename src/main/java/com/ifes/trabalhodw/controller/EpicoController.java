@@ -27,7 +27,7 @@ public class EpicoController {
     }
 
     @PostMapping
-    public EpicoOutputDto create(EpicoInputDto epicoInputDto) {
+    public EpicoOutputDto create(@RequestBody EpicoInputDto epicoInputDto) {
         return epicoApp.create(epicoInputDto);
     }
 

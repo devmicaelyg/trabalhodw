@@ -41,7 +41,7 @@ public class AutoGenerationApp {
 
         for(TipoHistoriaUsuarioOutputDto tipo: historiaUsuarios){
             List<TipoTarefaOutputDto> tarefas = tiposTarefa
-                    .stream().filter(t -> t.getTipoHistoriaUsuarioId() == tipo.getId())
+                    .stream().filter(t -> t.getTipoHistoriaUsuario().getId() == tipo.getId())
                     .toList();
 
             HistoriaDeUsuarioInputDto hist = new HistoriaDeUsuarioInputDto(
