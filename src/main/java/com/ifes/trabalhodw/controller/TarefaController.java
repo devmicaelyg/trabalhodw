@@ -40,4 +40,9 @@ public class TarefaController {
     public List<TarefaOutputDto> getByProjeto(@RequestParam("Id") UUID uuid) {
         return tarefaApp.getByProjeto(uuid);
     }
+
+    @GetMapping("/historiaDeUsuario")
+    public List<TarefaOutputDto> getByHistoriaDeUsuario(@RequestParam("Id") UUID uuid) {
+        return tarefaApp.getByHistoriaDeUsuario(uuid);
+    }
 }

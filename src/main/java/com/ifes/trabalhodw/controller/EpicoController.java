@@ -3,6 +3,7 @@ package com.ifes.trabalhodw.controller;
 import com.ifes.trabalhodw.application.EpicoApp;
 import com.ifes.trabalhodw.model.dto.InputDto.EpicoInputDto;
 import com.ifes.trabalhodw.model.dto.OutputDto.EpicoOutputDto;
+import com.ifes.trabalhodw.model.dto.OutputDto.TarefaOutputDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +12,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/epico")
+@CrossOrigin(maxAge = 3600)
 public class EpicoController {
     // implemente o CRUD usando EpicoApp
 
@@ -27,7 +29,7 @@ public class EpicoController {
     }
 
     @PostMapping
-    public EpicoOutputDto create(EpicoInputDto epicoInputDto) {
+    public EpicoOutputDto create(@RequestBody EpicoInputDto epicoInputDto) {
         return epicoApp.create(epicoInputDto);
     }
 
@@ -43,5 +45,10 @@ public class EpicoController {
     @DeleteMapping
     public void delete(@RequestParam("Id") UUID id) {
         epicoApp.deleteById(id);
+    }
+
+    @GetMapping("/projeto")
+    public List<EpicoOutputDto> getByProjeto(@RequestParam("Id") UUID uuid) {
+        return epicoApp.getByProjeto(uuid);
     }
 }

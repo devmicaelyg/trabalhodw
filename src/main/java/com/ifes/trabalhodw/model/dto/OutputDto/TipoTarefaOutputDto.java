@@ -12,6 +12,6 @@ import java.util.UUID;
 public class TipoTarefaOutputDto {
     private UUID id;
     private String descricao;
-    private TipoHistoriaUsuarioOutputDto tipoHistoriaUsuario;
+    private UUID tipoHistoriaUsuarioId;
 
 }

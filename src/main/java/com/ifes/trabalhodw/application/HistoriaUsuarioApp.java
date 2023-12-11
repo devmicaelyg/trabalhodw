@@ -62,7 +62,7 @@ public class HistoriaUsuarioApp implements IGenericApp<HistoriaDeUsuarioOutputDt
        histNova.setEpico(histAntiga.get().getEpico());
        histNova = this.repository.save(histNova);
        HistoriaDeUsuarioOutputDto output = this.mapper.map(histNova, HistoriaDeUsuarioOutputDto.class);
-       //output.setEpicoId(histNova.getEpico().getId());
+       output.setEpicoId(histNova.getEpico().getId());
        return output;
     }
 
