@@ -42,7 +42,7 @@ public class Epico{
             inverseJoinColumns = @JoinColumn(name = "dependencia_id"))
     private List<Epico> dependencias = new ArrayList<>();
 
-    @OneToMany(mappedBy = "epico", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "epico", cascade = CascadeType.ALL)
     private List<HistoriaDeUsuario> historiasDeUsuario = new ArrayList<>();
 
 }

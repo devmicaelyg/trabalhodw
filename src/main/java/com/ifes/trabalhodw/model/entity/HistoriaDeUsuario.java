@@ -38,4 +38,6 @@ public class HistoriaDeUsuario {
             inverseJoinColumns = @JoinColumn(name = "dependencia_id"))
     private List<HistoriaDeUsuario> dependencias = new ArrayList<>();
 
+    @OneToMany(mappedBy = "historiaDeUsuario", cascade = CascadeType.ALL)
+    private List<Tarefa> tarefas = new ArrayList<>();
 }

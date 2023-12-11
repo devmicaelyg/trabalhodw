@@ -21,6 +21,6 @@ public class HistoriaDeUsuarioOutputDto {
     private TipoPrioridade prioridade;
     private boolean isFinalizada;
     private Date dataCriacao;
-    private UUID tipoHistoriaUsuarioId;
-    private List<UUID> dependencias;
+    private TipoHistoriaUsuarioOutputDto tipoHistoriaUsuario;
+    private List<TipoHistoriaUsuarioOutputDto> dependencias;
 }
