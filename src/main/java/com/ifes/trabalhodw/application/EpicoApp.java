@@ -3,12 +3,15 @@ package com.ifes.trabalhodw.application;
 import com.ifes.trabalhodw.exception.NotFoundErrorException;
 import com.ifes.trabalhodw.model.dto.InputDto.EpicoInputDto;
 import com.ifes.trabalhodw.model.dto.OutputDto.EpicoOutputDto;
+import com.ifes.trabalhodw.model.dto.OutputDto.HistoriaDeUsuarioOutputDto;
 import com.ifes.trabalhodw.model.entity.Epico;
 import com.ifes.trabalhodw.repository.IEpicoRepository;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -27,12 +30,16 @@ public class EpicoApp implements IGenericApp<EpicoOutputDto, EpicoInputDto, UUID
     @Autowired
     private AutoGenerationApp generationApp;
 
+    @Autowired
+    private TipoHistoriaUsuarioApp tipoHistoriaUsuarioApp;
+
     @Override
     public EpicoOutputDto create(EpicoInputDto entity) {
         var epico = modelMapper.map(entity, Epico.class);
         epico = repository.save(epico);
         String obejtivo = pegarUltimaPalavra(epico.getDescricao());
-        generationApp.generateHistoriaDeUsuario(epico, obejtivo, epico.getTipoEpico().getTiposHistoriaUsuario());
+        var tiposHistoria = tipoHistoriaUsuarioApp.getByEpico(epico.getTipoEpico().getId());
+        generationApp.generateHistoriaDeUsuario(epico, obejtivo, tiposHistoria);
         return modelMapper.map(epico, EpicoOutputDto.class);
     }
 
@@ -74,5 +81,9 @@ public class EpicoApp implements IGenericApp<EpicoOutputDto, EpicoInputDto, UUID
         return modelMapper.map(epicoAtualizado, EpicoOutputDto.class);
     }
 
-
+    public List<EpicoOutputDto> getByProjeto(UUID idProjeto) {
+        List<Epico> epicos = repository.findAll().stream().filter(epico -> epico.getProjeto().getId().equals(idProjeto)).toList();
+        Type targetType = new TypeToken<List<EpicoOutputDto>>() {}.getType();
+        return modelMapper.map(epicos, targetType);
+    }
 }

@@ -17,8 +17,10 @@ public class TipoEpico {
     private UUID id;
     private String descricao;
 
-    @OneToMany(mappedBy = "tipoEpico", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TipoHistoriaUsuario> tiposHistoriaUsuario;
-
+    @ManyToMany
+    @JoinTable(name = "dependencias_tipo_epico",
+            joinColumns = @JoinColumn(name = "tipo_epico_id"),
+            inverseJoinColumns = @JoinColumn(name = "dependencia_id"))
+    private List<TipoEpico> dependecias;
 
 }

@@ -64,6 +64,4 @@ public class ProjetoApp implements IGenericApp<ProjetoOutputDto, ProjetoInputDto
         Projeto projetoAtt = repository.save(projeto);
         return modelMapper.map(projetoAtt, ProjetoOutputDto.class);
     }
-
-
 }

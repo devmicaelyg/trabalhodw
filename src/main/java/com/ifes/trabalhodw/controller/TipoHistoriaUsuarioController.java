@@ -23,6 +23,10 @@ public class TipoHistoriaUsuarioController {
     @GetMapping
     public TipoHistoriaUsuarioOutputDto getById(@RequestParam("Id") UUID id) { return application.getById(id);}
 
+    @GetMapping("/epico")
+    public List<TipoHistoriaUsuarioOutputDto> getByEpico(@RequestParam("EpicoId") UUID id) { return application.getByEpico(id);}
+
+
     @PostMapping
     public TipoHistoriaUsuarioOutputDto create(@RequestBody TipoHistoriaUsuarioInputDto tipo){ return application.create(tipo); }
 

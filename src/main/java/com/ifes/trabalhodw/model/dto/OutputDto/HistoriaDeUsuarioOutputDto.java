@@ -22,6 +22,5 @@ public class HistoriaDeUsuarioOutputDto {
     private boolean isFinalizada;
     private Date dataCriacao;
     private UUID tipoHistoriaUsuarioId;
-    private List<TarefaOutputDto> tarefas;
     private List<UUID> dependencias;
 }

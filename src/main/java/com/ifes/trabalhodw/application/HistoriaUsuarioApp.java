@@ -74,5 +74,11 @@ public class HistoriaUsuarioApp implements IGenericApp<HistoriaDeUsuarioOutputDt
         return outputs;
     }
 
+    public List<HistoriaDeUsuarioOutputDto> getAllByEpico(UUID id) {
+        Type targetType = new TypeToken<List<HistoriaDeUsuarioOutputDto>>() {}.getType();
+        List<HistoriaDeUsuario> historias = this.repository.findAll().stream().filter(hist -> hist.getEpico().getId().equals(id)).toList();
+        List<HistoriaDeUsuarioOutputDto> outputs = this.mapper.map(historias, targetType);
+        return outputs;
+    }
 
 }

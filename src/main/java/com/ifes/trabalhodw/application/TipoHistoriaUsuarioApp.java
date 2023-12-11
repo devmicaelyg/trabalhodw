@@ -4,32 +4,32 @@ import com.ifes.trabalhodw.exception.NotFoundErrorException;
 import com.ifes.trabalhodw.model.dto.InputDto.TipoHistoriaUsuarioInputDto;
 import com.ifes.trabalhodw.model.dto.OutputDto.TipoHistoriaUsuarioOutputDto;
 
-import com.ifes.trabalhodw.model.entity.Epico;
 import com.ifes.trabalhodw.model.entity.tipos.TipoEpico;
 import com.ifes.trabalhodw.model.entity.tipos.TipoHistoriaUsuario;
 import com.ifes.trabalhodw.repository.ITipoHistoriaUsuarioRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class TipoHistoriaUsuarioApp implements IGenericApp<TipoHistoriaUsuarioOutputDto, TipoHistoriaUsuarioInputDto, UUID> {
 
-    private final JpaRepository<TipoHistoriaUsuario, UUID> repository;
+    private final ITipoHistoriaUsuarioRepository repository;
 
     private ModelMapper modelMapper;
 
+    private final TipoEpicoApp tipoEpicoApp;
+
     @Autowired
-    public TipoHistoriaUsuarioApp(ITipoHistoriaUsuarioRepository repository, ModelMapper modelMapper) {
+    public TipoHistoriaUsuarioApp(ITipoHistoriaUsuarioRepository repository, ModelMapper modelMapper, TipoEpicoApp tipoEpicoApp) {
         this.repository = repository;
         this.modelMapper = modelMapper;
+        this.tipoEpicoApp = tipoEpicoApp;
     }
 
     @Override
@@ -45,9 +45,11 @@ public class TipoHistoriaUsuarioApp implements IGenericApp<TipoHistoriaUsuarioOu
     public TipoHistoriaUsuarioOutputDto create(TipoHistoriaUsuarioInputDto entity) {
 
         var model = modelMapper.map(entity, TipoHistoriaUsuario.class);
+        var tipoEpico = tipoEpicoApp.getById(entity.getTipoEpicoId());
+        model.getTipoEpico().setDescricao(tipoEpico.getDescricao());
         var novoTipo = repository.save(model);
-
-        return modelMapper.map(novoTipo, TipoHistoriaUsuarioOutputDto.class);
+        var output =  modelMapper.map(novoTipo, TipoHistoriaUsuarioOutputDto.class);
+        return output;
     }
 
     @Override
@@ -57,7 +59,8 @@ public class TipoHistoriaUsuarioApp implements IGenericApp<TipoHistoriaUsuarioOu
         if(model.isEmpty())
             throw new NotFoundErrorException("Não foi encontrado uma história de usuário com esse ID");
 
-        return modelMapper.map(model.get(), TipoHistoriaUsuarioOutputDto.class);
+        var output =  modelMapper.map(model.get(), TipoHistoriaUsuarioOutputDto.class);
+        return output;
     }
 
     @Override
@@ -75,12 +78,15 @@ public class TipoHistoriaUsuarioApp implements IGenericApp<TipoHistoriaUsuarioOu
         tipo.setId(id);
 
         TipoHistoriaUsuario tipoHistoriaUsuario = repository.save(tipo);
-        return modelMapper.map(tipoHistoriaUsuario, TipoHistoriaUsuarioOutputDto.class);
+
+        var output = modelMapper.map(tipoHistoriaUsuario, TipoHistoriaUsuarioOutputDto.class);
+        return  output;
     }
 
-    public List<TipoHistoriaUsuario> getByEpico(TipoEpico tipoEpico){
-        List<TipoHistoriaUsuario> historiasDeUmEpic = new ArrayList<>();
-        var tipos = repository.findAll();
-        return historiasDeUmEpic;
+    public List<TipoHistoriaUsuarioOutputDto> getByEpico(UUID tipoEpicoId){
+        List<TipoHistoriaUsuario> historiasDeUmEpic = repository.findAll();
+        historiasDeUmEpic.removeIf(historia -> !historia.getTipoEpico().getId().equals(tipoEpicoId));
+        Type targetType = new TypeToken<List<TipoHistoriaUsuarioOutputDto>>() {}.getType();
+        return modelMapper.map(historiasDeUmEpic, targetType);
     }
 }

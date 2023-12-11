@@ -16,7 +16,7 @@ public class TarefaOutputDto {
     private String titulo;
     private String descricao;
     private StatusTarefa statusTarefa;
-    private UUID historiaDeUsuario;
+    private UUID historiaDeUsuarioId;
     private List<TarefaOutputDto> dependencias;
 
 }

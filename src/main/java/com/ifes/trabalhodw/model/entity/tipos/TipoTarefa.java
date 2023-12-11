@@ -1,13 +1,12 @@
 package com.ifes.trabalhodw.model.entity.tipos;
 
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import com.ifes.trabalhodw.model.entity.tipos.TipoSituacao;
 
 @Entity
 @Data
@@ -19,6 +18,8 @@ public class TipoTarefa {
     private UUID id;
     
     private String descricao;
+
+    private TipoSituacao situacao;
 
     @ManyToMany
     private List<TipoTarefa> dependecias;

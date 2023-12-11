@@ -13,5 +13,5 @@ import java.util.UUID;
 public class TipoEpicoOutputDto {
     private UUID id;
     private String descricao;
-    private List<UUID> tiposHistoriaUsuarios;
+    private List<UUID> dependecias;
 }
