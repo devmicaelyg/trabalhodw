@@ -14,6 +14,6 @@ public class TipoHistoriaUsuarioOutputDto {
     private UUID id;
     private String descricao;
     private TipoEpicoOutputDto tipoEpico;
-    private List<UUID> dependencias;
+    private List<TipoEpicoOutputDto> dependencias;
 
 }

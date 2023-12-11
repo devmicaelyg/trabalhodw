@@ -20,7 +20,7 @@ public class Tarefa {
      private String descricao;
      private StatusTarefa statusTarefa;
 
-     @ManyToOne
+     @ManyToOne(cascade = CascadeType.ALL)
      @JoinColumn(name = "historia_de_usuario_id")
      private HistoriaDeUsuario historiaDeUsuario;
 

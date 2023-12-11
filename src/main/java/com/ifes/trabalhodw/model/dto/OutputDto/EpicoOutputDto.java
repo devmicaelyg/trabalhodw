@@ -1,6 +1,7 @@
 package com.ifes.trabalhodw.model.dto.OutputDto;
 
 import com.ifes.trabalhodw.model.dto.InputDto.HistoriaDeUsuarioInputDto;
+import com.ifes.trabalhodw.model.dto.InputDto.TipoEpicoInputDto;
 import com.ifes.trabalhodw.model.entity.tipos.TipoPrioridade;
 import lombok.AllArgsConstructor;
 import lombok.Data;
