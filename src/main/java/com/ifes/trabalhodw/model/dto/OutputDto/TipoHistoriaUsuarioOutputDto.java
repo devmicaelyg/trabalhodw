@@ -13,7 +13,7 @@ import java.util.UUID;
 public class TipoHistoriaUsuarioOutputDto {
     private UUID id;
     private String descricao;
-    private UUID tipoEpicoId;
-    private List<TarefaOutputDto> tarefas;
+    private TipoEpicoOutputDto tipoEpico;
+    private List<UUID> dependencias;
 
 }

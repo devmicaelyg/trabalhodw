@@ -13,4 +13,5 @@ import java.util.UUID;
 
 @Repository
 public interface IProjetoRepository extends JpaRepository<Projeto, UUID> {
+
 }

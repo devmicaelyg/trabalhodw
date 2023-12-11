@@ -7,13 +7,14 @@ import com.ifes.trabalhodw.model.dto.OutputDto.TarefaOutputDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/tarefa")
 public class TarefaController {
 
-    private final IGenericApp<TarefaOutputDto, TarefaInputDto,UUID> tarefaApp;
+    private final TarefaApp tarefaApp;
 
     @Autowired
     public TarefaController(TarefaApp app) {
@@ -33,5 +34,10 @@ public class TarefaController {
     @GetMapping
     public TarefaOutputDto getById(@RequestParam("Id") UUID uuid) {
         return tarefaApp.getById(uuid);
+    }
+
+    @GetMapping("/projeto")
+    public List<TarefaOutputDto> getByProjeto(@RequestParam("Id") UUID uuid) {
+        return tarefaApp.getByProjeto(uuid);
     }
 }

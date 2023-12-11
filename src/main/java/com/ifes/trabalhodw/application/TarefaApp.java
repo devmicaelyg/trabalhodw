@@ -3,6 +3,7 @@ package com.ifes.trabalhodw.application;
 import com.ifes.trabalhodw.exception.NotFoundErrorException;
 import com.ifes.trabalhodw.model.dto.InputDto.HistoriaDeUsuarioInputDto;
 import com.ifes.trabalhodw.model.dto.InputDto.TarefaInputDto;
+import com.ifes.trabalhodw.model.dto.OutputDto.HistoriaDeUsuarioOutputDto;
 import com.ifes.trabalhodw.model.dto.OutputDto.TarefaOutputDto;
 import com.ifes.trabalhodw.model.entity.HistoriaDeUsuario;
 import com.ifes.trabalhodw.model.entity.StatusTarefa;
@@ -11,9 +12,11 @@ import com.ifes.trabalhodw.model.entity.tipos.TipoHistoriaUsuario;
 import com.ifes.trabalhodw.model.entity.tipos.TipoTarefa;
 import com.ifes.trabalhodw.repository.ITarefaRepository;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -40,11 +43,11 @@ public class TarefaApp implements IGenericApp<TarefaOutputDto, TarefaInputDto, U
     @Override
     public TarefaOutputDto getById(UUID uuid) {
         var tarefa = tarefaRepository.findById(uuid);
-        // se tarefa não existir, raise NotFoundErrorException
         if(tarefa.isEmpty()) {
              throw  new NotFoundErrorException("Tarefa não encontrada");
         }
-        return mapper.map(tarefa, TarefaOutputDto.class);
+
+        return mapper.map(tarefa.get(), TarefaOutputDto.class);
     }
 
     @Override
@@ -74,5 +77,18 @@ public class TarefaApp implements IGenericApp<TarefaOutputDto, TarefaInputDto, U
         return mapper.map(tarefaNova, TarefaOutputDto.class);
     }
 
+    public List<TarefaOutputDto> getByHistoriaDeUsuario(UUID uuid) {
+        List<Tarefa> tarefas = tarefaRepository.findAll()
+                .stream()
+                .filter(tarefa -> tarefa.getHistoriaDeUsuario().getId().equals(uuid))
+                .toList();
+        Type targetType = new TypeToken<List<TarefaOutputDto>>() {}.getType();
+        return mapper.map(tarefas, targetType);
+    }
 
+    public List<TarefaOutputDto> getByProjeto(UUID uuid) {
+        List<Tarefa> tarefas = tarefaRepository.findAllByProjetoId(uuid);
+        Type targetType = new TypeToken<List<TarefaOutputDto>>() {}.getType();
+        return mapper.map(tarefas, targetType);
+    }
 }

@@ -4,6 +4,8 @@ import com.ifes.trabalhodw.model.dto.InputDto.HistoriaDeUsuarioInputDto;
 import com.ifes.trabalhodw.model.dto.InputDto.TarefaInputDto;
 import com.ifes.trabalhodw.model.dto.OutputDto.HistoriaDeUsuarioOutputDto;
 import com.ifes.trabalhodw.model.dto.OutputDto.TarefaOutputDto;
+import com.ifes.trabalhodw.model.dto.OutputDto.TipoHistoriaUsuarioOutputDto;
+import com.ifes.trabalhodw.model.dto.OutputDto.TipoTarefaOutputDto;
 import com.ifes.trabalhodw.model.entity.Epico;
 import com.ifes.trabalhodw.model.entity.HistoriaDeUsuario;
 import com.ifes.trabalhodw.model.entity.StatusTarefa;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AutoGenerationApp {
@@ -29,25 +32,37 @@ public class AutoGenerationApp {
     @Autowired
     private TarefaApp tarefaApp;
 
-    public List<HistoriaDeUsuarioOutputDto> generateHistoriaDeUsuario(Epico epico, String historyObjective, List<TipoHistoriaUsuario> historiaUsuarios){
+    @Autowired
+    private TipoTarefaApp tipoTarefaApp;
+
+    public List<HistoriaDeUsuarioOutputDto> generateHistoriaDeUsuario(Epico epico, String historyObjective, List<TipoHistoriaUsuarioOutputDto> historiaUsuarios){
         List<HistoriaDeUsuarioOutputDto> historias = new ArrayList<>();
-        for(TipoHistoriaUsuario tipo: historiaUsuarios){
-            HistoriaDeUsuarioInputDto hist = new HistoriaDeUsuarioInputDto();
-            hist.setTitulo(tipo.getDescricao() + " Automatico");
-            hist.setDescricao(tipo.getDescricao() + " " + historyObjective);
-            hist.setEpicoId(epico.getId());
-            hist.setPrioridade(epico.getRelevancia());
-            hist.setTipoHistoriaUsuarioId(tipo.getId());
+        var tiposTarefa = tipoTarefaApp.getAll();
+
+        for(TipoHistoriaUsuarioOutputDto tipo: historiaUsuarios){
+            List<TipoTarefaOutputDto> tarefas = tiposTarefa
+                    .stream().filter(t -> t.getTipoHistoriaUsuarioId() == tipo.getId())
+                    .toList();
+
+            HistoriaDeUsuarioInputDto hist = new HistoriaDeUsuarioInputDto(
+                    tipo.getDescricao() + " Automatico",
+                    tipo.getDescricao() + " " + historyObjective,
+                    epico.getRelevancia(),
+                    epico.getId(),
+                    new ArrayList<>(),
+                    tipo.getId()
+            );
+
             HistoriaDeUsuarioOutputDto outputDto = historiaDeUsuarioApp.create(hist);
-            this.generateTarefa(outputDto, historyObjective, tipo.getTiposTarefa());
+            this.generateTarefa(outputDto, historyObjective, tarefas);
             historias.add(mapper.map(hist, HistoriaDeUsuarioOutputDto.class));
         }
         return historias;
     }
 
-    public List<TarefaOutputDto> generateTarefa(HistoriaDeUsuarioOutputDto hist, String descricaoObjetivo, List<TipoTarefa> tipoTarefas) {
+    public List<TarefaOutputDto> generateTarefa(HistoriaDeUsuarioOutputDto hist, String descricaoObjetivo, List<TipoTarefaOutputDto> tipoTarefas) {
         List<TarefaOutputDto> tarefas = new ArrayList<>();
-        for (TipoTarefa tipoTarefa : tipoTarefas) {
+        for (TipoTarefaOutputDto tipoTarefa : tipoTarefas) {
             TarefaInputDto tarefa = new TarefaInputDto();
             tarefa.setDescricao(descricaoObjetivo);
             tarefa.setTitulo(tipoTarefa.getDescricao());
