@@ -28,6 +28,10 @@ public class TipoHistoriaUsuario {
             inverseJoinColumns = @JoinColumn(name = "dependencia_id"))
     private List<TipoHistoriaUsuario> dependencias;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "tipoHistoriaUsuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TipoTarefa> tiposTarefa = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "tipo_epico_id")
     private TipoEpico tipoEpico;
 }

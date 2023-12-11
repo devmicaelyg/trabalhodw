@@ -29,7 +29,16 @@ public class TipoEpicoApp implements IGenericApp<TipoEpicoOutputDto, TipoEpicoIn
         Type targetType = new TypeToken<List<TipoEpicoOutputDto>>() {}.getType();
         var listaTipoEpico = repository.findAll();
 
-        return modelMapper.map(listaTipoEpico, targetType);
+        for (int i=0; i<listaTipoEpico.size(); i++){
+            TipoEpico tipoEpico = listaTipoEpico.get(i);
+//            List<UUID> listaTipoHU = new ArrayList<>();
+//            for(TipoHistoriaUsuario tipoHU : tipoEpico.getTiposHistoriaUsuario()){
+//                listaTipoHU.add(tipoHU.getId());
+//            }
+//            listaTipoEpicoOutputDto.get(i).setTiposHistoriaUsuarios(listaTipoHU);
+        }
+
+        return listaTipoEpicoOutputDto;
     }
 
     @Override
@@ -48,7 +57,13 @@ public class TipoEpicoApp implements IGenericApp<TipoEpicoOutputDto, TipoEpicoIn
         if(model.isEmpty())
             throw new NotFoundErrorException  ("Não foi encontrado um tipo de epico com esse ID");
 
-        return modelMapper.map(model.get(), TipoEpicoOutputDto.class);
+        TipoEpicoOutputDto tipoEpico = modelMapper.map(model.get(), TipoEpicoOutputDto.class);
+//        List<UUID> listaTipoHU = new ArrayList<>();
+//        for(TipoHistoriaUsuario tipoHU : model.get().getTiposHistoriaUsuario()){
+//            listaTipoHU.add(tipoHU.getId());
+//        }
+//        tipoEpico.setTiposHistoriaUsuarios(listaTipoHU);
+        return tipoEpico;
     }
 
     @Override

@@ -19,7 +19,7 @@ public class EpicoOutputDto {
     private TipoPrioridade relevancia;
     private String categoria;
     private List<HistoriaDeUsuarioOutputDto> historiasDeUsuario;
-    private UUID tipoEpicoId;
+    private TipoEpicoOutputDto tipoEpico;
     private List<UUID> dependencias;
-    private UUID projetoId;
+    private ProjetoOutputDto projeto;
 }

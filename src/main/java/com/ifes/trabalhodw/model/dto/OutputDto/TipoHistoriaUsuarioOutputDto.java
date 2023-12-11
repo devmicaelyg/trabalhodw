@@ -1,5 +1,6 @@
 package com.ifes.trabalhodw.model.dto.OutputDto;
 
+import com.ifes.trabalhodw.model.entity.tipos.TipoEpico;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,6 @@ public class TipoHistoriaUsuarioOutputDto {
     private UUID id;
     private String descricao;
     private TipoEpicoOutputDto tipoEpico;
-    private List<UUID> dependencias;
+    private List<TarefaOutputDto> tarefas;
 
 }

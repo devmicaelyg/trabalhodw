@@ -11,6 +11,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/tipotarefa")
+@CrossOrigin(maxAge = 3600)
 public class TipoTarefaController {
     @Autowired
     private TipoTarefaApp application;

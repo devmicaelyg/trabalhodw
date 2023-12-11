@@ -11,6 +11,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/tipohistoriausuario")
+@CrossOrigin(maxAge = 3600)
 public class TipoHistoriaUsuarioController {
     @Autowired
     private TipoHistoriaUsuarioApp application;
