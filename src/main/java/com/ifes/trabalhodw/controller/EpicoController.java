@@ -39,7 +39,7 @@ public class EpicoController {
     }
 
     @PutMapping
-    public EpicoOutputDto update(@RequestParam("Id") UUID id, EpicoInputDto epicoInputDto) {
+    public EpicoOutputDto update(@RequestParam("Id") UUID id, @RequestBody EpicoInputDto epicoInputDto) {
         return epicoApp.update(id, epicoInputDto);
     }
     @DeleteMapping
