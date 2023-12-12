@@ -30,11 +30,11 @@ public class Epico{
     private String categoria;
 
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "tipo_epico_id")
     private TipoEpico tipoEpico;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "projeto_id")
     private Projeto projeto;
 
