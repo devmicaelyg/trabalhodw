@@ -1,6 +1,5 @@
 package com.ifes.trabalhodw.controller;
 
-import com.ifes.trabalhodw.application.IGenericApp;
 import com.ifes.trabalhodw.application.TarefaApp;
 import com.ifes.trabalhodw.model.dto.InputDto.TarefaInputDto;
 import com.ifes.trabalhodw.model.dto.OutputDto.TarefaOutputDto;
@@ -44,5 +43,10 @@ public class TarefaController {
     @GetMapping("/historiaDeUsuario")
     public List<TarefaOutputDto> getByHistoriaDeUsuario(@RequestParam("Id") UUID uuid) {
         return tarefaApp.getByHistoriaDeUsuario(uuid);
+    }
+
+    @GetMapping("/ordemExecucao")
+    public List<TarefaOutputDto> getByOrdemExecucao(@RequestParam("Id") UUID uuid) {
+        return tarefaApp.getOrdemExecucao(uuid);
     }
 }

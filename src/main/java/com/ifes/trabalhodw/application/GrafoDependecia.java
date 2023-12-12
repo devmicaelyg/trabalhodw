@@ -18,4 +18,15 @@ public class GrafoDependecia<T> {
             }
         return grafo.temCiclo();
     }
+
+    public List<T> recomendacao(T obj, List<T> dependecias) {
+        Grafo<T> grafo = new Grafo<>();
+        grafo.adicionarVertice(obj);
+
+        for (T dependencia : dependecias) {
+            grafo.adicionarVertice(dependencia);
+            grafo.adicionarAresta(obj, dependencia, 1);
+            }
+        return grafo.ordenacaoTopologica();
+    }
 }

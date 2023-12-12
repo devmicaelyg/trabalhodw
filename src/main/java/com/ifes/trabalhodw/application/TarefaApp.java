@@ -114,8 +114,18 @@ public class TarefaApp implements IGenericApp<TarefaOutputDto, TarefaInputDto, U
 
     public List<TarefaOutputDto> getByProjeto(UUID uuid) {
         List<Tarefa> tarefas = tarefaRepository.findAllByProjetoId(uuid);
-        System.out.println(tarefas);
         Type targetType = new TypeToken<List<TarefaOutputDto>>() {}.getType();
         return mapper.map(tarefas, targetType);
+    }
+
+    public List<TarefaOutputDto> getOrdemExecucao(UUID uuid) {
+        var tarefaOptional = tarefaRepository.findById(uuid);
+        if(tarefaOptional.isEmpty()) {
+            throw  new NotFoundErrorException("Tarefa não encontrada");
+        }
+        Tarefa tarefa = tarefaOptional.get();
+        List<Tarefa> ordem = tarefaGrafoDependecia.recomendacao(tarefa, tarefa.getDependencias());
+        Type targetType = new TypeToken<List<TarefaOutputDto>>() {}.getType();
+        return mapper.map(ordem, targetType);
     }
 }

@@ -38,5 +38,5 @@ public interface IGrafo<T> {
    *
    * @return Uma lista de vértices representando a ordenação topológica do grafo.
    */
-  ArrayList<Vertice<T>> ordenacaoTopologica();
+  ArrayList<T> ordenacaoTopologica();
 }

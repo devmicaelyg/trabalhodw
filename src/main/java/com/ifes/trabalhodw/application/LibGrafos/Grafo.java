@@ -113,7 +113,7 @@ public class Grafo<T> implements IGrafo<T> {
     }
 
     // Executa uma ordenação topológica do grafo.
-    public ArrayList<Vertice<T>> ordenacaoTopologica() {
+    public ArrayList<T> ordenacaoTopologica() {
         ArrayList<Vertice<T>> resultado = new ArrayList<>();
         Stack<Vertice<T>> pilha = new Stack<>();
         ArrayList<Vertice<T>> visitados = new ArrayList<>();
@@ -128,8 +128,12 @@ public class Grafo<T> implements IGrafo<T> {
         while (!pilha.isEmpty()) {
             resultado.add(pilha.pop());
         }
-
-        return resultado;
+        //Culpa de TPA Não Assumo
+        ArrayList<T> resultadoT = new ArrayList<>();
+        for (Vertice<T> vertice : resultado) {
+            resultadoT.add(vertice.getValor());
+        }
+        return resultadoT;
     }
 
     // Função auxiliar para a ordenação topológica durante a busca em profundidade (DFS).
