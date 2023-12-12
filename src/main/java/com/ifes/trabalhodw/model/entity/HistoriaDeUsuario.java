@@ -4,13 +4,17 @@ import com.ifes.trabalhodw.model.entity.tipos.TipoHistoriaUsuario;
 import com.ifes.trabalhodw.model.entity.tipos.TipoPrioridade;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.*;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class HistoriaDeUsuario {
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -38,6 +42,6 @@ public class HistoriaDeUsuario {
             inverseJoinColumns = @JoinColumn(name = "dependencia_id"))
     private List<HistoriaDeUsuario> dependencias = new ArrayList<>();
 
-    @OneToMany(mappedBy = "historiaDeUsuario", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "historiaDeUsuario")
     private List<Tarefa> tarefas = new ArrayList<>();
 }

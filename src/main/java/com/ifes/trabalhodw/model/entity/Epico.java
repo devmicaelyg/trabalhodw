@@ -16,6 +16,8 @@ import java.util.UUID;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Epico{
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -28,11 +30,11 @@ public class Epico{
     private String categoria;
 
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "tipo_epico_id")
     private TipoEpico tipoEpico;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "projeto_id")
     private Projeto projeto;
 

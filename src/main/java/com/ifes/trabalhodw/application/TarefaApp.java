@@ -1,5 +1,6 @@
 package com.ifes.trabalhodw.application;
 
+import com.ifes.trabalhodw.exception.DependeciasCiclicasException;
 import com.ifes.trabalhodw.exception.NotFoundErrorException;
 import com.ifes.trabalhodw.model.dto.InputDto.HistoriaDeUsuarioInputDto;
 import com.ifes.trabalhodw.model.dto.InputDto.TarefaInputDto;
@@ -26,18 +27,46 @@ public class TarefaApp implements IGenericApp<TarefaOutputDto, TarefaInputDto, U
 
     private final ModelMapper mapper;
     private final ITarefaRepository tarefaRepository;
+    private final GrafoDependecia<Tarefa> tarefaGrafoDependecia;
 
     @Autowired
-    public TarefaApp(ModelMapper mapper, ITarefaRepository tarefaRepository) {
+    public TarefaApp(ModelMapper mapper, ITarefaRepository tarefaRepository, GrafoDependecia<Tarefa> grafoDependecia) {
         this.mapper = mapper;
         this.tarefaRepository = tarefaRepository;
+        this.tarefaGrafoDependecia = grafoDependecia;
     }
 
     @Override
     public TarefaOutputDto create(TarefaInputDto entity) {
         Tarefa tarefa = mapper.map(entity, Tarefa.class);
+        tarefa.getHistoriaDeUsuario().setId(entity.getHistoriaDeUsuarioId());
         tarefa = tarefaRepository.save(tarefa);
+
+        // Verificar se a tarefa possui dependencia
+        boolean temCiclo = this.tarefaGrafoDependecia.possuiDependencia(tarefa, tarefa.getDependencias());
+        if(temCiclo){
+            throw new DependeciasCiclicasException();
+        }
+
         return mapper.map(tarefaRepository.save(tarefa), TarefaOutputDto.class);
+    }
+
+    public List<TarefaOutputDto> createAll(List<TarefaInputDto> entities) {
+        Type targetType = new TypeToken<List<TarefaOutputDto>>() {}.getType();
+        Type targetInputType = new TypeToken<List<Tarefa>>() {}.getType();
+        List<Tarefa> tarefas = this.mapper.map(entities, targetInputType);
+
+        for(Tarefa tarefa : tarefas) {
+            boolean temCiclo = this.tarefaGrafoDependecia.possuiDependencia(tarefa, tarefa.getDependencias());
+            if(temCiclo){
+                throw new DependeciasCiclicasException();
+            }
+        }
+
+
+        tarefas = this.tarefaRepository.saveAll(tarefas);
+        return this.mapper.map(tarefas, targetType);
+
     }
 
     @Override
@@ -78,16 +107,14 @@ public class TarefaApp implements IGenericApp<TarefaOutputDto, TarefaInputDto, U
     }
 
     public List<TarefaOutputDto> getByHistoriaDeUsuario(UUID uuid) {
-        List<Tarefa> tarefas = tarefaRepository.findAll()
-                .stream()
-                .filter(tarefa -> tarefa.getHistoriaDeUsuario().getId().equals(uuid))
-                .toList();
+        List<Tarefa> tarefas = tarefaRepository.findAllByHistoriaDeUsuarioId(uuid);
         Type targetType = new TypeToken<List<TarefaOutputDto>>() {}.getType();
         return mapper.map(tarefas, targetType);
     }
 
     public List<TarefaOutputDto> getByProjeto(UUID uuid) {
         List<Tarefa> tarefas = tarefaRepository.findAllByProjetoId(uuid);
+        System.out.println(tarefas);
         Type targetType = new TypeToken<List<TarefaOutputDto>>() {}.getType();
         return mapper.map(tarefas, targetType);
     }

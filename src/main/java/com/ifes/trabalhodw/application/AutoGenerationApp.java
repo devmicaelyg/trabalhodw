@@ -35,14 +35,27 @@ public class AutoGenerationApp {
     @Autowired
     private TipoTarefaApp tipoTarefaApp;
 
-    public List<HistoriaDeUsuarioOutputDto> generateHistoriaDeUsuario(Epico epico, String historyObjective, List<TipoHistoriaUsuarioOutputDto> historiaUsuarios){
-        List<HistoriaDeUsuarioOutputDto> historias = new ArrayList<>();
+    // crie método que faz uso de generateHistoriaDeUsuario e generateTarefa
+    public void generateHistoriaDeUsuarioAndTarefa(Epico epico, String historyObjective, List<TipoHistoriaUsuarioOutputDto> historiaUsuarios){
+        var historias = this.historiaDeUsuarioApp.createAll(generateHistoriaDeUsuario(epico, historyObjective, historiaUsuarios));
+        List<TarefaInputDto> tarefas = new ArrayList<>();
         var tiposTarefa = tipoTarefaApp.getAll();
 
-        for(TipoHistoriaUsuarioOutputDto tipo: historiaUsuarios){
-            List<TipoTarefaOutputDto> tarefas = tiposTarefa
-                    .stream().filter(t -> t.getTipoHistoriaUsuario().getId() == tipo.getId())
+        for(HistoriaDeUsuarioOutputDto hist: historias){
+            List<TipoTarefaOutputDto> tipoTarefaHist = tiposTarefa
+                    .stream().filter(t -> t.getTipoHistoriaUsuario().getId() == hist.getTipoHistoriaUsuario().getId())
                     .toList();
+            tarefas.addAll(generateTarefa(hist, historyObjective, tipoTarefaHist));
+        }
+
+        this.tarefaApp.createAll(tarefas);
+    }
+
+
+    public List<HistoriaDeUsuarioInputDto> generateHistoriaDeUsuario(Epico epico, String historyObjective, List<TipoHistoriaUsuarioOutputDto> historiaUsuarios){
+        List<HistoriaDeUsuarioInputDto> historias = new ArrayList<>();
+
+        for(TipoHistoriaUsuarioOutputDto tipo: historiaUsuarios){
 
             HistoriaDeUsuarioInputDto hist = new HistoriaDeUsuarioInputDto(
                     tipo.getDescricao() + " Automatico",
@@ -53,25 +66,23 @@ public class AutoGenerationApp {
                     tipo.getId()
             );
 
-            HistoriaDeUsuarioOutputDto outputDto = historiaDeUsuarioApp.create(hist);
-            this.generateTarefa(outputDto, historyObjective, tarefas);
-            historias.add(mapper.map(hist, HistoriaDeUsuarioOutputDto.class));
+            hist.setDependencias(new ArrayList<>());
+            historias.add(hist);
         }
         return historias;
     }
 
-    public List<TarefaOutputDto> generateTarefa(HistoriaDeUsuarioOutputDto hist, String descricaoObjetivo, List<TipoTarefaOutputDto> tipoTarefas) {
-        List<TarefaOutputDto> tarefas = new ArrayList<>();
+    public List<TarefaInputDto> generateTarefa(HistoriaDeUsuarioOutputDto hist, String descricaoObjetivo, List<TipoTarefaOutputDto> tipoTarefas) {
+        List<TarefaInputDto> tarefas = new ArrayList<>();
         for (TipoTarefaOutputDto tipoTarefa : tipoTarefas) {
             TarefaInputDto tarefa = new TarefaInputDto();
             tarefa.setDescricao(descricaoObjetivo);
             tarefa.setTitulo(tipoTarefa.getDescricao());
             tarefa.setHistoriaDeUsuarioId(hist.getId());
             tarefa.setStatusTarefa(StatusTarefa.AGUARDANDO);
-            tarefaApp.create(tarefa);
-            tarefas.add(mapper.map(tarefa, TarefaOutputDto.class));
+            tarefa.setDependencias(new ArrayList<>());
+            tarefas.add(tarefa);
         }
-
         return tarefas;
     }
 }

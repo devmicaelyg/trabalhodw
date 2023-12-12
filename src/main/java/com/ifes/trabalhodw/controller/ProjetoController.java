@@ -13,7 +13,8 @@ import static aj.org.objectweb.asm.Type.getType;
 
 @RestController
 @RequestMapping("/projeto")
-@CrossOrigin(maxAge = 3600)
+@CrossOrigin(
+        maxAge = 3600)
 public class ProjetoController {
     @Autowired
     private ProjetoApp application;

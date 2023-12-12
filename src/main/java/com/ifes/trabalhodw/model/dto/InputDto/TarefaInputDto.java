@@ -17,5 +17,5 @@ public class TarefaInputDto {
     private String descricao;
     private StatusTarefa statusTarefa;
     private UUID historiaDeUsuarioId;
-    private List<TarefaOutputDto> dependencias;
+    private List<UUID> dependencias;
 }

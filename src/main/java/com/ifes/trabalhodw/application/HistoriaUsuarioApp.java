@@ -1,5 +1,6 @@
 package com.ifes.trabalhodw.application;
 
+import com.ifes.trabalhodw.exception.DependeciasCiclicasException;
 import com.ifes.trabalhodw.exception.NotFoundErrorException;
 import com.ifes.trabalhodw.model.dto.InputDto.HistoriaDeUsuarioInputDto;
 import com.ifes.trabalhodw.model.dto.OutputDto.HistoriaDeUsuarioOutputDto;
@@ -21,20 +22,34 @@ public class HistoriaUsuarioApp implements IGenericApp<HistoriaDeUsuarioOutputDt
 
     private final JpaRepository<HistoriaDeUsuario, UUID> repository;
     private final ModelMapper mapper;
+    private final GrafoDependecia<HistoriaDeUsuario> grafoDependecia;
 
     @Autowired
-    public HistoriaUsuarioApp(HistoriaDeUsuarioRepository repository, ModelMapper mapper) {
+    public HistoriaUsuarioApp(HistoriaDeUsuarioRepository repository, ModelMapper mapper, GrafoDependecia<HistoriaDeUsuario> grafoDependecia) {
         this.repository = repository;
         this.mapper = mapper;
+        this.grafoDependecia = grafoDependecia;
     }
 
     @Override
     public HistoriaDeUsuarioOutputDto create(HistoriaDeUsuarioInputDto entity) {
         HistoriaDeUsuario hist = this.mapper.map(entity, HistoriaDeUsuario.class);
-        Epico epico = new Epico();
-        epico.setId(entity.getEpicoId());
-        hist.setEpico(epico);
-        return this.mapper.map(this.repository.save(hist), HistoriaDeUsuarioOutputDto.class);
+        System.out.println("Antes de salvar "+ hist);
+        this.repository.save(hist);
+        System.out.println("Depois de salvar "+ hist);
+
+        if(grafoDependecia.possuiDependencia(hist, hist.getDependencias()))
+            throw new DependeciasCiclicasException();
+
+        return this.mapper.map(hist, HistoriaDeUsuarioOutputDto.class);
+    }
+
+    public List<HistoriaDeUsuarioOutputDto> createAll(List<HistoriaDeUsuarioInputDto> entities) {
+        Type targetType = new TypeToken<List<HistoriaDeUsuarioOutputDto>>() {}.getType();
+        Type targetInputType = new TypeToken<List<HistoriaDeUsuario>>() {}.getType();
+        List<HistoriaDeUsuario> historias = this.mapper.map(entities, targetInputType);
+        historias = this.repository.saveAll(historias);
+        return this.mapper.map(historias, targetType);
     }
 
     @Override
@@ -61,6 +76,10 @@ public class HistoriaUsuarioApp implements IGenericApp<HistoriaDeUsuarioOutputDt
        histNova.setId(id);
        histNova.setEpico(histAntiga.get().getEpico());
        histNova = this.repository.save(histNova);
+
+       if(grafoDependecia.possuiDependencia(histNova, histNova.getDependencias()))
+            throw new DependeciasCiclicasException();
+
        HistoriaDeUsuarioOutputDto output = this.mapper.map(histNova, HistoriaDeUsuarioOutputDto.class);
        output.setEpicoId(histNova.getEpico().getId());
        return output;

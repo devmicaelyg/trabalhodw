@@ -1,5 +1,6 @@
 package com.ifes.trabalhodw.application;
 
+import com.ifes.trabalhodw.exception.DependeciasCiclicasException;
 import com.ifes.trabalhodw.exception.NotFoundErrorException;
 import com.ifes.trabalhodw.model.dto.InputDto.EpicoInputDto;
 import com.ifes.trabalhodw.model.dto.OutputDto.EpicoOutputDto;
@@ -35,14 +36,26 @@ public class EpicoApp implements IGenericApp<EpicoOutputDto, EpicoInputDto, UUID
     @Autowired
     private TipoHistoriaUsuarioApp tipoHistoriaUsuarioApp;
 
+    @Autowired
+    private GrafoDependecia<Epico> grafoDependecia;
+
     @Override
     public EpicoOutputDto create(EpicoInputDto entity) {
         var epico = modelMapper.map(entity, Epico.class);
         epico = repository.save(epico);
         String obejtivo = pegarUltimaPalavra(epico.getDescricao());
         var tiposHistoria = tipoHistoriaUsuarioApp.getByEpico(epico.getTipoEpico().getId());
-        generationApp.generateHistoriaDeUsuario(epico, obejtivo, tiposHistoria);
+
+        generationApp.generateHistoriaDeUsuarioAndTarefa(epico, obejtivo, tiposHistoria);
+
+        if(epico.getDependencias() == null)
+            epico.setDependencias(new ArrayList<>());
+
+        if(grafoDependecia.possuiDependencia(epico, epico.getDependencias()))
+            throw new DependeciasCiclicasException();
+
         return modelMapper.map(epico, EpicoOutputDto.class);
+
     }
 
     @Override

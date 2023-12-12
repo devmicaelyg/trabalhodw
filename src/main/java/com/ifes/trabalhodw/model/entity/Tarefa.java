@@ -1,16 +1,19 @@
 package com.ifes.trabalhodw.model.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Tarefa {
      @Id
      @GeneratedValue(generator = "uuid2")
@@ -20,7 +23,7 @@ public class Tarefa {
      private String descricao;
      private StatusTarefa statusTarefa;
 
-     @ManyToOne(cascade = CascadeType.ALL)
+     @ManyToOne
      @JoinColumn(name = "historia_de_usuario_id")
      private HistoriaDeUsuario historiaDeUsuario;
 
@@ -28,6 +31,6 @@ public class Tarefa {
      @JoinTable(name = "dependencias_tarefa",
              joinColumns = @JoinColumn(name = "tarefa_id"),
              inverseJoinColumns = @JoinColumn(name = "dependencia_id"))
-     private List<Tarefa> dependencias;
+     private List<Tarefa> dependencias = new ArrayList<>();
 
 }
