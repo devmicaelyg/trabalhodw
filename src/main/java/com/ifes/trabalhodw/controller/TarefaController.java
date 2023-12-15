@@ -49,4 +49,9 @@ public class TarefaController {
     public List<TarefaOutputDto> getByOrdemExecucao(@RequestParam("Id") UUID uuid) {
         return tarefaApp.getOrdemExecucao(uuid);
     }
+
+    @GetMapping("/ciclo-dependencia")
+    public boolean getCicloDependencia(@RequestParam("Id") UUID uuid) {
+        return tarefaApp.possuiCiclo(uuid);
+    }
 }

@@ -1,4 +1,4 @@
-package com.ifes.trabalhodw.application.LibGrafos;
+package com.ifes.trabalhodw.utils.LibGrafos;
 
 public class Aresta<T> {
     private float peso;

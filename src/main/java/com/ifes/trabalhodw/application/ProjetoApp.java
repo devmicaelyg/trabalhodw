@@ -3,6 +3,7 @@ package com.ifes.trabalhodw.application;
 import com.ifes.trabalhodw.exception.NotFoundErrorException;
 import com.ifes.trabalhodw.model.dto.InputDto.ProjetoInputDto;
 import com.ifes.trabalhodw.model.dto.OutputDto.ProjetoOutputDto;
+import com.ifes.trabalhodw.model.entity.HistoriaDeUsuario;
 import com.ifes.trabalhodw.model.entity.Projeto;
 import com.ifes.trabalhodw.repository.IProjetoRepository;
 import org.modelmapper.ModelMapper;
@@ -64,4 +65,6 @@ public class ProjetoApp implements IGenericApp<ProjetoOutputDto, ProjetoInputDto
         Projeto projetoAtt = repository.save(projeto);
         return modelMapper.map(projetoAtt, ProjetoOutputDto.class);
     }
+
+    // Verifique se o projeto possui ciclo
 }

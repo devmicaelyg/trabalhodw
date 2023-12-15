@@ -1,26 +1,25 @@
 package com.ifes.trabalhodw.application;
 
-import com.ifes.trabalhodw.exception.DependeciasCiclicasException;
+import com.ifes.trabalhodw.utils.LibGrafos.Grafo;
 import com.ifes.trabalhodw.exception.NotFoundErrorException;
 import com.ifes.trabalhodw.model.dto.InputDto.HistoriaDeUsuarioInputDto;
 import com.ifes.trabalhodw.model.dto.OutputDto.HistoriaDeUsuarioOutputDto;
-import com.ifes.trabalhodw.model.entity.Epico;
 import com.ifes.trabalhodw.model.entity.HistoriaDeUsuario;
 import com.ifes.trabalhodw.repository.HistoriaDeUsuarioRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class HistoriaUsuarioApp implements IGenericApp<HistoriaDeUsuarioOutputDto, HistoriaDeUsuarioInputDto,  UUID> {
 
-    private final JpaRepository<HistoriaDeUsuario, UUID> repository;
+    private final HistoriaDeUsuarioRepository repository;
     private final ModelMapper mapper;
     private final GrafoDependecia<HistoriaDeUsuario> grafoDependecia;
 
@@ -31,16 +30,24 @@ public class HistoriaUsuarioApp implements IGenericApp<HistoriaDeUsuarioOutputDt
         this.grafoDependecia = grafoDependecia;
     }
 
+    public boolean possuiCiclo(UUID projetoUUID){
+        List<HistoriaDeUsuario> historias = this.repository.findAllByProjeto(projetoUUID);
+
+        Grafo<HistoriaDeUsuario> grafo = new Grafo<>();
+        for (HistoriaDeUsuario hist : historias) {
+            for (HistoriaDeUsuario dependencia : hist.getDependencias()) {
+                grafo.adicionarVertice(dependencia);
+                grafo.adicionarAresta(hist, dependencia, 1);
+            }
+        }
+
+        return grafo.temCiclo();
+    }
+
     @Override
     public HistoriaDeUsuarioOutputDto create(HistoriaDeUsuarioInputDto entity) {
         HistoriaDeUsuario hist = this.mapper.map(entity, HistoriaDeUsuario.class);
-        System.out.println("Antes de salvar "+ hist);
         this.repository.save(hist);
-        System.out.println("Depois de salvar "+ hist);
-
-        if(grafoDependecia.possuiDependencia(hist, hist.getDependencias()))
-            throw new DependeciasCiclicasException();
-
         return this.mapper.map(hist, HistoriaDeUsuarioOutputDto.class);
     }
 
@@ -73,31 +80,25 @@ public class HistoriaUsuarioApp implements IGenericApp<HistoriaDeUsuarioOutputDt
               throw new NotFoundErrorException("Historia de Usuario não encontrada");
        }
        HistoriaDeUsuario histNova = this.mapper.map(entity, HistoriaDeUsuario.class);
+       ArrayList<HistoriaDeUsuario> dependencias = new ArrayList<>();
+         for (UUID dependenciaId : entity.getDependencias()) {
+              HistoriaDeUsuario dependencia = new HistoriaDeUsuario();
+              dependencia.setId(dependenciaId);
+              dependencias.add(dependencia);
+         }
+
        histNova.setId(id);
-       histNova.setEpico(histAntiga.get().getEpico());
+       histNova.setDependencias(dependencias);
+
        histNova = this.repository.save(histNova);
-
-       if(grafoDependecia.possuiDependencia(histNova, histNova.getDependencias()))
-            throw new DependeciasCiclicasException();
-
-       HistoriaDeUsuarioOutputDto output = this.mapper.map(histNova, HistoriaDeUsuarioOutputDto.class);
-       output.setEpicoId(histNova.getEpico().getId());
-       return output;
+       return this.mapper.map(histNova, HistoriaDeUsuarioOutputDto.class);
     }
 
     @Override
     public List<HistoriaDeUsuarioOutputDto> getAll() {
         Type targetType = new TypeToken<List<HistoriaDeUsuarioOutputDto>>() {}.getType();
         List<HistoriaDeUsuario> historias = this.repository.findAll();
-        List<HistoriaDeUsuarioOutputDto> outputs = this.mapper.map(historias, targetType);
-        return outputs;
-    }
-
-    public List<HistoriaDeUsuarioOutputDto> getAllByEpico(UUID id) {
-        Type targetType = new TypeToken<List<HistoriaDeUsuarioOutputDto>>() {}.getType();
-        List<HistoriaDeUsuario> historias = this.repository.findAll().stream().filter(hist -> hist.getEpico().getId().equals(id)).toList();
-        List<HistoriaDeUsuarioOutputDto> outputs = this.mapper.map(historias, targetType);
-        return outputs;
+        return this.mapper.map(historias, targetType);
     }
 
 }

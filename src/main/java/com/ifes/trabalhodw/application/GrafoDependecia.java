@@ -1,6 +1,6 @@
 package com.ifes.trabalhodw.application;
 
-import com.ifes.trabalhodw.application.LibGrafos.Grafo;
+import com.ifes.trabalhodw.utils.LibGrafos.Grafo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -51,4 +51,9 @@ public class EpicoController {
     public List<EpicoOutputDto> getByProjeto(@RequestParam("Id") UUID uuid) {
         return epicoApp.getByProjeto(uuid);
     }
+
+    @GetMapping("/ciclo-dependencia")
+    public boolean possuiCicloDependencia(@RequestParam("Id") UUID uuid) {
+        return epicoApp.possuiCicloDependencia(uuid);
+    }
 }

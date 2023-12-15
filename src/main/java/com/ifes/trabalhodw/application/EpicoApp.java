@@ -1,13 +1,11 @@
 package com.ifes.trabalhodw.application;
 
+import com.ifes.trabalhodw.utils.LibGrafos.Grafo;
 import com.ifes.trabalhodw.exception.DependeciasCiclicasException;
 import com.ifes.trabalhodw.exception.NotFoundErrorException;
 import com.ifes.trabalhodw.model.dto.InputDto.EpicoInputDto;
 import com.ifes.trabalhodw.model.dto.OutputDto.EpicoOutputDto;
-import com.ifes.trabalhodw.model.dto.OutputDto.HistoriaDeUsuarioOutputDto;
-import com.ifes.trabalhodw.model.dto.OutputDto.TarefaOutputDto;
 import com.ifes.trabalhodw.model.entity.Epico;
-import com.ifes.trabalhodw.model.entity.Tarefa;
 import com.ifes.trabalhodw.repository.IEpicoRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -91,6 +89,13 @@ public class EpicoApp implements IGenericApp<EpicoOutputDto, EpicoInputDto, UUID
         if(epico.isEmpty())
             throw new NotFoundErrorException("Não foi encontrado um epico com ID: " + id + "!");
         Epico epicoAtualizado = modelMapper.map(entity, Epico.class);
+        ArrayList<Epico> dependencias = new ArrayList<>();
+        for (UUID idDependencia : entity.getDependencias()) {
+            Epico dependencia = new Epico();
+            dependencia.setId(idDependencia);
+            dependencias.add(dependencia);
+        }
+        epicoAtualizado.setDependencias(dependencias);
         epicoAtualizado.setId(id);
         epicoAtualizado = repository.save(epicoAtualizado);
         return modelMapper.map(epicoAtualizado, EpicoOutputDto.class);
@@ -100,5 +105,17 @@ public class EpicoApp implements IGenericApp<EpicoOutputDto, EpicoInputDto, UUID
         List<Epico> epicos = repository.findAll().stream().filter(epico -> epico.getProjeto().getId().equals(idProjeto)).toList();
         Type targetType = new TypeToken<List<EpicoOutputDto>>() {}.getType();
         return modelMapper.map(epicos, targetType);
+    }
+
+
+    public boolean possuiCicloDependencia(UUID idEpico) {
+        List<Epico> epicos = repository.findAllByProjeto(idEpico);
+        Grafo<Epico> grafo = new Grafo<>();
+        for (Epico epico : epicos) {
+            for (Epico dependencia : epico.getDependencias()) {
+                grafo.adicionarAresta(epico, dependencia, 1);
+            }
+        }
+        return grafo.temCiclo();
     }
 }

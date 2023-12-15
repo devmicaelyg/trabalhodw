@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 // Adiciona a anotação @Repository indicando que esta interface é um bean de repositório gerenciado pelo Spring
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
+
 // Declaração da interface ITipoTarefaRepository que estende JpaRepository
 public interface ITipoTarefaRepository extends JpaRepository<TipoTarefa, UUID> {
     // Essa interface herda métodos padrão do JpaRepository, como save, findById, findAll, delete, entre outros

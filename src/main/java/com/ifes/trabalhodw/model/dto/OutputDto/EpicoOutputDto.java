@@ -21,6 +21,6 @@ public class EpicoOutputDto {
     private String categoria;
     private List<HistoriaDeUsuarioOutputDto> historiasDeUsuario;
     private TipoEpicoOutputDto tipoEpico;
-    private List<UUID> dependencias;
+    private List<EpicoOutputDto> dependencias;
     private ProjetoOutputDto projeto;
 }

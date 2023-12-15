@@ -14,7 +14,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/historia")
 public class HistoriaDeUsuarioController {
-    private final IGenericApp<HistoriaDeUsuarioOutputDto, HistoriaDeUsuarioInputDto, UUID> app;
+    private final HistoriaUsuarioApp app;
 
     @Autowired
     public HistoriaDeUsuarioController(HistoriaUsuarioApp app) {
@@ -44,5 +44,10 @@ public class HistoriaDeUsuarioController {
     @PutMapping
     public HistoriaDeUsuarioOutputDto updateHistoriaDeUsuario(@RequestParam("Id") UUID id, @RequestBody HistoriaDeUsuarioInputDto dto) {
         return app.update(id, dto);
+    }
+
+    @GetMapping("/ciclo-dependencia")
+    public boolean possuiCiclo(@RequestParam("Id") UUID uuid) {
+        return app.possuiCiclo(uuid);
     }
 }

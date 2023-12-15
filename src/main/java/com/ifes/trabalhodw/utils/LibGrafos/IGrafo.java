@@ -1,4 +1,4 @@
-package com.ifes.trabalhodw.application.LibGrafos;
+package com.ifes.trabalhodw.utils.LibGrafos;
 import java.util.ArrayList;
 
 public interface IGrafo<T> {
